@@ -5,6 +5,9 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 
+# Requirement for getttext
+RUN apt-get update && apt-get install -y gettext libgettextpo-dev
+
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -16,3 +19,4 @@ RUN chmod +x /start-dev.sh
 WORKDIR /app
 
 ENTRYPOINT ["/entrypoint.sh"]
+

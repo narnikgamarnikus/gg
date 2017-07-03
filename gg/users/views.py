@@ -7,11 +7,10 @@ from .models import User
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
+    # These next one line tell the view to index lookups by slug
     model = User
-    # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'
-
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
@@ -39,7 +38,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class UserListView(LoginRequiredMixin, ListView):
+    # These next one line tell the view to index lookups by slug
     model = User
-    # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'

@@ -16,6 +16,8 @@
     {% block css %}
     <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" integrity="sha384-awusxf8AUojygHf2+joICySzB780jVvQaVCAt1clU3QsyAitLGul28Qxb2r1e5g+" crossorigin="anonymous">
+
 
     <!-- Your stuff: Third-party CSS libraries go here -->
     {% compress css %}
@@ -43,6 +45,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'about' %}">About</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'services:list' %}">Services</a>
+            </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
@@ -62,6 +67,24 @@
                 <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
               </li>
             {% endif %}
+              <form action="{% url 'set_language' %}" method="post" class="form-inline my-2 my-lg-0">{% csrf_token %}
+                  <input name="next" type="hidden" value="{{ redirect_to }}" />
+                    <select name="language" class="custom-select mb-2 mr-sm-2 mb-sm-0">
+                          {% get_current_language as LANGUAGE_CODE %}
+                          {% get_available_languages as LANGUAGES %}
+                          {% get_language_info_list for LANGUAGES as languages %}
+                          {% for language in languages %}
+                      <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                      </option>
+
+                          {% endfor %}
+                      <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Go" />
+                    </select>
+              </form>
+              <form method="post" action="/search/" class="form-inline my-2 my-lg-0 autocomplete-me">{% csrf_token %}
+                <input class="form-control mr-sm-2" type="text" id="id_q" name="q">
+              </form>                
           </ul>
         </div>
       </nav>
@@ -78,7 +101,26 @@
 
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
+        <div id="app-7">
+          <ol>
+            <!--
+              Теперь мы можем передать каждому компоненту todo объект
+              с информацией о задаче, который будет динамически меняться.
+              Мы также определяем для каждого компонента "key",
+              значение которого будет объяснено далее в руководстве.
+            -->
+            <todo-item
+              v-for="item in groceryList"
+              v-bind:todo="item"
+              v-bind:key="item.id">
+            </todo-item>
+          </ol>
+        </div>
       {% endblock content %}
+
+  
+
+
 
     </div> <!-- /container -->
 
@@ -89,17 +131,40 @@
     <!-- Placed at the end of the document so the pages load faster -->
     {% block javascript %}
       <!-- Required by Bootstrap v4 Alpha 4 -->
-      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+      <!--script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/vue"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
 
       <!-- place project specific Javascript in this file -->
       {% compress js %}
       <script src="{% static 'js/project.js' %}"></script>
-      {% endcompress %}
+      <script src="{% static 'js/search.js' %}"></script>
+      <script type="text/javascript">
+        
+      Vue.component('todo-item', {
+        props: ['todo'],
+        delimiters: ["#{", "}"],
+        template: '<li>#{ todo.text }</li>'
+      })
 
+      var app7 = new Vue({
+        el: '#app-7',
+        data: {
+          groceryList: [
+            { id: 0, text: 'Овощи' },
+            { id: 1, text: 'Сыр' },
+            { id: 2, text: 'Что там ещё люди едят?' }
+          ]
+        }
+      })
+
+      </script>
+
+      {% endcompress %}
     {% endblock javascript %}
   </body>
 </html>

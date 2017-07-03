@@ -10,6 +10,7 @@ Local settings
 """
 
 from .base import *  # noqa
+import os
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -76,3 +77,20 @@ CELERY_ALWAYS_EAGER = True
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+
+
+# HAYSTACK
+# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), '../whoosh_index'),
+    },
+}
+
+#HAYSTACK_SITECONF = os.path.join(os.path.dirname(__file__), 'search_sites'
+
+#HAYSTACK_SEARCH_ENGINE = 'whoosh'
+
+#HAYSTACK_WHOOSH_PATH = os.path.join(os.path.dirname(__file__), 'whoosh_index'

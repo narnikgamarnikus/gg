@@ -8,9 +8,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import environ
+import os
 
 ROOT_DIR = environ.Path(__file__) - 3  # (gg/config/settings/base.py - 3 = gg/)
 APPS_DIR = ROOT_DIR.path('gg')
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Load operating system environment variables and then prepare to use them
 env = environ.Env()
@@ -37,6 +39,7 @@ DJANGO_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
 
     # Useful template tags:
     # 'django.contrib.humanize',
@@ -49,12 +52,15 @@ THIRD_PARTY_APPS = [
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'mptt', # three structure
+    'haystack' # search driver
 ]
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
     # custom users app
     'gg.users.apps.UsersConfig',
+    'gg.services.apps.ServicesConfig'
     # Your stuff: custom apps go here
 ]
 
@@ -66,6 +72,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -112,7 +119,7 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='postgres:///gg'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-
+# specify Postgis backend 
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -123,7 +130,16 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru_RU' #'en-us'  
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('ru', 'Russian'),
+)
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_PATH, '../locale'),
+)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
@@ -283,3 +299,4 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}Service: {{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{ object.name }}</h2>
+    </div>
+  </div>
+
+<!-- Action buttons -->
+<div class="row">
+
+  <div class="col-sm-12">
+    <a class="btn btn-primary" href="{% url 'services:update' service.slug %}" role="button">{% trans  'Update' %}</a>
+    <!-- Your Stuff: Custom user template urls -->
+  </div>
+
+</div>
+<!-- End Action buttons -->
+
+
+</div>
+{% endblock content %}
+

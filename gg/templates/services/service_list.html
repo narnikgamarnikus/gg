@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static i18n mptt_tags %}
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>Services</h2>
+
+  <div class="list-group">
+    {% recursetree service_list %}
+      <a href="{% url 'services:detail' node.slug %}" class="list-group-item">
+        <h4 class="list-group-item-heading">{{ node.name }}</h4>
+      </a>
+        {% if not node.is_leaf_node %}
+          <ul class="children">
+              {{ children }}
+          </ul>
+        {% endif %}
+    {% endrecursetree %}
+  </div>
+</div>
+{% endblock content %}
