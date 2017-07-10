@@ -29,7 +29,7 @@ class ServiceUpdateView(UpdateView):
 class ServiceRedirectView(RedirectView):
 	permanent = False
 
-	def get_redirect_url(self):
+	def get_redirect_url(self, *args, **kwargs):
 		return reverse('services:detail',
 			kwargs={'slug': self.kwargs.get("slug")})
 

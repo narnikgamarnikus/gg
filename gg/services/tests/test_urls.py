@@ -20,7 +20,7 @@ class TestUserURLs(TestCase):
     def test_detail_reverse(self):
         """services:detail should reverse to /services/testservice/."""
         self.assertEqual(
-            reverse('services:detail', kwargs={'service': 'testservice'}),
+            reverse('services:detail', kwargs={'slug': 'testservice'}),
             '/services/testservice/'
         )
 
@@ -41,11 +41,14 @@ class TestUserURLs(TestCase):
 
     def test_update_reverse(self):
         """services:update should reverse to /services/~update/."""
-        self.assertEqual(reverse('users:update'), '/users/~update/')
+        self.assertEqual(
+            reverse('services:update', kwargs={'slug': 'testservice'}),
+            '/services/~update/testservice/'
+        )
 
     def test_update_resolve(self):
         """/services/~update/ should resolve to services:update."""
         self.assertEqual(
-            resolve('/services/~update/').view_name,
+            resolve('/services/~update/testservice/').view_name,
             'services:update'
         )

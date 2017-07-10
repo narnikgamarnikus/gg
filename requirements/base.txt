@@ -60,3 +60,5 @@ django-mptt
 django-haystack
 Whoosh
 simplejson
+ujson
+django-fsm

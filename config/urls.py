@@ -20,6 +20,8 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^search/', include('gg.search.urls', namespace='search')),
+    url(r'^crm/', include('gg.crm.urls', namespace='crm')),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

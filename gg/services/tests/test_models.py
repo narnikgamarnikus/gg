@@ -4,7 +4,7 @@ from gg.services.models import Service
 class TestService(TestCase):
 
     def setUp(self):
-        self.service = Service.objects.create(slug="testservice", name="testservice")
+        self.service = Service.objects.create(name="testservice")
 
     def test__str__(self):
         self.assertEqual(

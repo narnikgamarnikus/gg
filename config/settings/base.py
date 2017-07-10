@@ -53,15 +53,18 @@ THIRD_PARTY_APPS = [
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'mptt', # three structure
-    'haystack' # search driver
+    'haystack', # search driver
+    'django_fsm', # 
 ]
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
     # custom users app
     'gg.users.apps.UsersConfig',
-    'gg.services.apps.ServicesConfig'
     # Your stuff: custom apps go here
+    'gg.services.apps.ServicesConfig',
+    'gg.crm.apps.CMRConfig',
+
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -184,6 +187,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                'users.context_processors.allauth_popup.allauth_popup'
             ],
         },
     },
@@ -266,7 +270,7 @@ AUTHENTICATION_BACKENDS = [
 # Some really nice defaults
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
 ACCOUNT_ADAPTER = 'gg.users.adapters.AccountAdapter'

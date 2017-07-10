@@ -26,11 +26,11 @@ class Service(MPTTModel):
     	related_name='children', 
     	db_index=True)
     '''
-   	probles = models.ManyToManyField(
-   		'service.Trouble', 
+   	problems = models.ManyToManyField(
+   		'services.Trouble', 
    		related_name='service', 
    		blank=True,
-   		_('The probles that are solved by this service'))
+   		_('The problems that are solved by this service'))
 	'''
     class Meta:
     	verbose_name = "Услуга"
@@ -42,7 +42,7 @@ class Service(MPTTModel):
     
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name, allow_unicode=True)
         super(Service, self).save(*args, **kwargs)
     
     def __str__(self):
