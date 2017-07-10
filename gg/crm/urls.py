@@ -1,8 +1,16 @@
 from django.conf.urls import url
-
 from . import views
 
+
 urlpatterns = [
+    url(
+        regex=r'^services-autocomplete/$',
+        view=views.ServicesAutocomplete.as_view(),
+        name='services-autocomplete',
+    ),
+]
+
+urlpatterns += [
 
     url(
         regex=r'^$',

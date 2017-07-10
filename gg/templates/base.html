@@ -44,13 +44,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'home' %}">{% trans 'Home' %}<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
+              <a class="nav-link" href="{% url 'about' %}">{% trans 'About' %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'services:list' %}">Services</a>
+              <a class="nav-link" href="{% url 'services:list' %}">{% trans 'Services' %}</a>
             </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">
@@ -72,6 +72,17 @@
               </li>
             {% endif %}            
           </ul>
+
+          <form id="app" class="form-inline my-2 my-lg-0">
+              <input type="text" class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" v-model="q" @input="typeInput">
+              <search-item 
+                v-for="item in search" 
+                :item="item" 
+                :key="item.id">  
+               </search-item>
+            <button class="btn btn-outline-secondary my-2 my-sm-0">Submit</button>
+          </form>
+
           <form action="{% url 'set_language' %}" method="post" class="form-inline my-2 my-lg-0">{% csrf_token %}
             <input name="next" type="hidden" value="{{ redirect_to }}" class="form-control mr-sm-2" />
               <select name="language" class="custom-select mb-2 mr-sm-2 mb-sm-0">
@@ -83,7 +94,7 @@
                     {{ language.name_local }} ({{ language.code }})
                   </option>
                 {% endfor %}
-                <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" value="Go" />
+                <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" value="{% trans 'Go' %}" />
               </select>
           </form> 
         </div>
@@ -100,6 +111,8 @@
 
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
+
+
 
 
 
@@ -140,8 +153,50 @@
       <!--script src="{% static 'js/search.js' %}"></script-->
       {% endcompress %}
 
-    {% block included_javascript %}
-    {% endblock included_javascript %}
+
+      <script type="text/javascript">
+
+      Vue.component('search-item', {
+        props: ['item', 'value'],
+        delimiters: ["#{", "}"],
+        template: '#search-item',
+      })
+
+      Vue.http.headers.common['X-CSRF-TOKEN'] = csrftoken
+
+      var app = new Vue({
+        el: '#app',
+        delimiters: ["#{", "}"],
+        data: {
+          searchendpoint: 'http://' + window.location.host + '/search/autocomplete/?q=',
+          q: '',
+          search: [],
+        },
+        methods: {
+          typeInput: function() {
+            this.$http.post(this.searchendpoint + this.q).then(
+               function(response){
+                this.search = response.data
+            }, function(error){
+              //console.log(error)
+            })
+          },
+        },
+      })
+
+      </script>
+
+      <script type="text/x-template" id="search-item">
+        <ul class="form-group row">
+          <a :href="item.link" class="form-control-static"><li>
+            #{ item.title }
+          </li></a>
+        </ul>
+      </script>
+
+
+      {% block included_javascript %}
+      {% endblock included_javascript %}
 
     {% endblock javascript %}
   </body>

@@ -55,6 +55,7 @@ THIRD_PARTY_APPS = [
     'mptt', # three structure
     'haystack', # search driver
     'django_fsm', # 
+
 ]
 
 # Apps specific for this project go here.
@@ -67,8 +68,14 @@ LOCAL_APPS = [
 
 ]
 
+# Apps that you want to connect to the main.
+PRE_APPS = [
+    'dal',
+    'dal_select2',
+]
+
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = PRE_APPS + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
