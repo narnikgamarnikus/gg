@@ -13,6 +13,16 @@
       {% if object.name %}
         <p>{{ object.name }}</p>
       {% endif %}
+
+    {% load badges_tags %}
+    <span class="badge">
+    {% for level in user|badge_count %}
+      {% if level.count %}
+        <span style="color: red" title="{{level.count}} {{level.badge__level|level_title}} badge{{level.count|pluralize}}"><span style="color: green"  class="level_{{level.badge__level}} metal">●</span>{{level.count}}</span>
+      {% endif %}
+    {% endfor %}
+    </span>
+
     </div>
   </div>
 

@@ -73,16 +73,18 @@
             {% endif %}            
           </ul>
 
-          <form id="app" class="form-inline my-2 my-lg-0">
-              <input type="text" class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" v-model="q" @input="typeInput">
-              <search-item 
-                v-for="item in search" 
-                :item="item" 
-                :key="item.id">  
-               </search-item>
-            <button class="btn btn-outline-secondary my-2 my-sm-0">Submit</button>
-          </form>
-
+        <div id="app">
+          <div class="btn-group" :class="{show : dropDown}">
+            <input class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" v-model="q" data-toggle="dropdown" aria-haspopup="true" :aria-expanded="{true : dropDown}">
+              <div class="dropdown-menu">
+                            <search-item 
+                            v-for="item in search" 
+                            :item="item" 
+                            :key="item.id">  
+                           </search-item>
+              </div>
+          </div>
+        </div>
           <form action="{% url 'set_language' %}" method="post" class="form-inline my-2 my-lg-0">{% csrf_token %}
             <input name="next" type="hidden" value="{{ redirect_to }}" class="form-control mr-sm-2" />
               <select name="language" class="custom-select mb-2 mr-sm-2 mb-sm-0">
@@ -171,27 +173,37 @@
           searchendpoint: 'http://' + window.location.host + '/search/autocomplete/?q=',
           q: '',
           search: [],
+          //show: true
         },
-        methods: {
-          typeInput: function() {
-            this.$http.post(this.searchendpoint + this.q).then(
-               function(response){
-                this.search = response.data
-            }, function(error){
-              //console.log(error)
-            })
-          },
+        computed: {
+          dropDown: function() {
+            if ( Object.keys(this.search).length > 0) {
+              return true
+            } else {
+              return false
+            }
+          }
         },
-      })
+        watch: {
+          q: function() {
+            if (this.q.length > 0) {
+              this.$http.post(this.searchendpoint + this.q).then(
+                  function(response){
+                    this.search = response.data
+                  }, function(error){
+                  //console.log(error)
+                })
+              }
+            }
+          }
+        })
 
       </script>
 
       <script type="text/x-template" id="search-item">
-        <ul class="form-group row">
-          <a :href="item.link" class="form-control-static"><li>
-            #{ item.title }
-          </li></a>
-        </ul>
+          <a :href="item.link" class="btn dropdown-item">
+          #{ item.title }
+          </a>
       </script>
 
 

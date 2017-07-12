@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
+
 @csrf_exempt
 def autocomplete(request):
     sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
@@ -16,3 +17,5 @@ def autocomplete(request):
     ]
 
     return HttpResponse(json.dumps(suggestions), content_type='application/json')
+
+

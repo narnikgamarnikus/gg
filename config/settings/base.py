@@ -54,7 +54,9 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',  # registration
     'mptt', # three structure
     'haystack', # search driver
-    'django_fsm', # 
+    'django_fsm', # django funny state machine
+    'cachalot', # cache 
+    'avatar', #avatars for users
 
 ]
 
@@ -65,6 +67,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     'gg.services.apps.ServicesConfig',
     'gg.crm.apps.CMRConfig',
+    'gg.badges.apps.BadgesConfig'
 
 ]
 
@@ -288,6 +291,10 @@ SOCIALACCOUNT_ADAPTER = 'gg.users.adapters.SocialAccountAdapter'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'users:redirect'
 LOGIN_URL = 'account_login'
+
+ACCOUNT_FORMS = {
+    "signup": "gg.users.forms.CustomSignupForm",
+}
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'

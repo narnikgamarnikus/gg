@@ -3,17 +3,34 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-
+from multiselectfield import MultiSelectField
 
 @python_2_unicode_compatible
 class User(AbstractUser):
-    # First Name and Last Name do not cover name patterns
-    # around the globe.
-    name = models.CharField(_('Name of User'), blank=True, max_length=255)
+
+	EXECUTANT = 'executant'
+	CLIENT = 'client'   
+
+	USER_ROLES = (
+		(EXECUTANT, _('Executant')),
+		(CLIENT, _('Client')),
+	)
+
+	# First Name and Last Name do not cover name patterns
+	# around the globe.
+	role = MultiSelectField(
+		max_length=30, 
+		null=True,
+		choices=USER_ROLES,
+	)
+	name = models.CharField(_('Name of User'), blank=True, max_length=255)
+	balance = models.PositiveSmallIntegerField(default=0)
+
+	def __str__(self):
+		return self.username
+
+	def get_absolute_url(self):
+		return reverse('users:detail', kwargs={'username': self.username})
 
 
-    def __str__(self):
-        return self.username
-
-    def get_absolute_url(self):
-        return reverse('users:detail', kwargs={'username': self.username})
+from gg.users import meta_badges

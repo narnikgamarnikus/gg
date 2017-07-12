@@ -9,11 +9,26 @@ import ujson as json
 from .forms import AssignmentForm
 from django.core.urlresolvers import reverse
 from dal import autocomplete
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 
 class AssignmentCreateView(CreateView):
-	model = Assignment
-	form_class = AssignmentForm
+    model = Assignment
+    form_class = AssignmentForm
+    message = _('Thank you! your assignment has been posted.')
+
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super(AssignmentCreateView, self).form_valid(form)
+
+
+    def get_success_url(self):
+        messages.success(
+            self.request, self.message)
+        return reverse('crm:assignment_detail', kwargs={'slug': self.object.slug})
+
 
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
     # These next one line tell the view to index lookups by slug

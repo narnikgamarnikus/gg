@@ -7,6 +7,8 @@ from model_utils import FieldTracker
 from django_fsm import ConcurrentTransitionMixin, FSMField, transition
 from .utils import slug_generator
 from django.utils.text import slugify
+from django.conf import settings
+
 
 class State(object):
     '''
@@ -53,6 +55,8 @@ class Assignment(ConcurrentTransitionMixin, Base):
 	)
 
 	services = models.ManyToManyField('services.Service')
+
+	created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
 	def save(self, *args, **kwargs):
 		if not self.id:
