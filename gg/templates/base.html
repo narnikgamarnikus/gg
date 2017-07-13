@@ -52,6 +52,12 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'services:list' %}">{% trans 'Services' %}</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'crm:assignment_list' %}">{% trans 'Assignments' %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:list' %}">{% trans 'Executsnts' %}</a>
+            </li>            
             {% if request.user.is_authenticated %}
               <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
@@ -77,11 +83,11 @@
           <div class="btn-group" :class="{show : dropDown}">
             <input class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" v-model="q" data-toggle="dropdown" aria-haspopup="true" :aria-expanded="{true : dropDown}">
               <div class="dropdown-menu">
-                            <search-item 
-                            v-for="item in search" 
-                            :item="item" 
-                            :key="item.id">  
-                           </search-item>
+                  <search-item 
+                  v-for="item in search" 
+                  :item="item" 
+                  :key="item.id">  
+                  </search-item>
               </div>
           </div>
         </div>

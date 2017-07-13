@@ -42,3 +42,6 @@ class UserListView(LoginRequiredMixin, ListView):
     model = User
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+    def get_queryset(self):
+        return User.objects.filter(role__icontains='executant')

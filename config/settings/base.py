@@ -57,6 +57,7 @@ THIRD_PARTY_APPS = [
     'django_fsm', # django funny state machine
     'cachalot', # cache 
     'avatar', #avatars for users
+    'django_filters', #models filters 
 
 ]
 

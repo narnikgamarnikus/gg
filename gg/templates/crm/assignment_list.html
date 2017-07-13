@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static i18n json %}
+{% block title %}Assignments{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <h2>Assignments</h2>
+        {% for assignment in assignment_list %}
+          <a href="{% url 'crm:assignment_detail' assignment.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ assignment.type }}</h5>
+              <small>{{ assignment.type }}</small>
+          </div>
+          <p class="mb-1"></p>
+          <div style="display: inline-block;">
+          {% for service in assignment.services.all %}<small>{{ service.name }}, </small>{% endfor %}
+          </div>
+          </a>
+        {% endfor %}
+    </div>
+    <div class="col-sm-3 offset-sm-1 sidebar-offcanvas">
+      <form action="{% url 'crm:assignment_list' %}">
+        <fieldset class="form-group">
+          <legend>{% trans 'Assignments type' %}</legend>
+        </fieldset>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="type" id="optionsRadios1" value="in">
+            In
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="type" id="optionsRadios1" value="out">
+            Out
+          </label>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+

@@ -11,7 +11,9 @@ from django.core.urlresolvers import reverse
 from dal import autocomplete
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
-
+import ujson as json
+from django.core import serializers
+from .filters import AssignmentFilter
 
 class AssignmentCreateView(CreateView):
     model = Assignment
@@ -42,8 +44,14 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
 class AssignmentListView(LoginRequiredMixin, ListView):
     # These next one line tell the view to index lookups by slug
     model = Assignment
+    template_name = 'crm/assignment_list.html'
 
-
+    def get_queryset(self):
+        queryset = Assignment.objects.order_by('created').distinct()
+        if self.request.GET:
+            f = AssignmentFilter(self.request.GET, queryset)
+            return f.qs
+        return queryset
 
 
 

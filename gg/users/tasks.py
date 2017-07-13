@@ -30,4 +30,3 @@ def create_user(sender, instance, created, **kwargs):
 			changed_executant_balance(instance.id)
 		else:
 			changed_client_balance(instance.id)
-
