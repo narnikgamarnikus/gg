@@ -2,6 +2,10 @@ FROM python:3.5
 
 ENV PYTHONUNBUFFERED 1
 
+# Install spatial libraries to work with Postgis and Geodjango
+RUN apt-get update -y
+RUN apt-get -y install binutils libproj-dev gdal-bin python-gdal
+
 RUN groupadd -r django \
     && useradd -r -g django django
 

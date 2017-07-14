@@ -1,3 +1,4 @@
+'''
 from django.test import RequestFactory
 from test_plus.test import TestCase
 from .factories import AssignmentFactory
@@ -30,3 +31,4 @@ class TestAssignmentRedirectView(BaseAssignmentTestCase):
             view.get_redirect_url(),
             '/crm/slug-0/'
         )
+'''

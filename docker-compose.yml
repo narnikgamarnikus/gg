@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    build: ./compose/postgres
+    build: ./compose/docker-mdillon-postgis/9.6-2.3
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups

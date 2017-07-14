@@ -71,3 +71,7 @@ django-annoying==0.10.3
 django-hitcount==1.2.2
 bleach
 django-filter
+django-cities
+django-jinja
+django-money==0.10.2
+django-money-rates==0.3.1

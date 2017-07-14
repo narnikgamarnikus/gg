@@ -1,4 +1,4 @@
-"""
+'''
 Django settings for gg project.
 
 For more information on this file, see
@@ -6,7 +6,7 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
-"""
+'''
 import environ
 import os
 
@@ -58,6 +58,8 @@ THIRD_PARTY_APPS = [
     'cachalot', # cache 
     'avatar', #avatars for users
     'django_filters', #models filters 
+    'djmoney', # django-money https://github.com/django-money/django-money
+    'djmoney_rates', # django-money-rates https://github.com/evonove/django-money-rates
 
 ]
 
@@ -120,7 +122,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [
-    ("""Narnik Gamarnik""", 'narnikgamarnikus@gmail.com'),
+    ('''Narnik Gamarnik''', 'narnikgamarnikus@gmail.com'),
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -134,7 +136,7 @@ DATABASES = {
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 # specify Postgis backend 
-
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
 # Local time zone for this installation. Choices can be found here:
@@ -171,6 +173,38 @@ USE_TZ = True
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
+    {
+    'BACKEND': 'django_jinja.backend.Jinja2',
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'match_extension': '.jinja',
+        'context_processors': [
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.media',
+            'django.template.context_processors.static',
+            'django.template.context_processors.tz',
+            'django.contrib.messages.context_processors.messages',
+            # Your stuff: custom template context processors go here
+            'users.context_processors.allauth_popup.allauth_popup'
+            ],
+        'extensions': [
+            'jinja2.ext.do',
+            'jinja2.ext.loopcontrols',
+            'jinja2.ext.with_',
+            'jinja2.ext.i18n',
+            'jinja2.ext.autoescape',
+            'django_jinja.builtins.extensions.CsrfExtension',
+            'django_jinja.builtins.extensions.CacheExtension',
+            'django_jinja.builtins.extensions.TimezoneExtension',
+            'django_jinja.builtins.extensions.UrlsExtension',
+            'django_jinja.builtins.extensions.StaticFilesExtension',
+            'django_jinja.builtins.extensions.DjangoFiltersExtension',
+            ],
+        },
+    },
     {
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -294,7 +328,7 @@ LOGIN_REDIRECT_URL = 'users:redirect'
 LOGIN_URL = 'account_login'
 
 ACCOUNT_FORMS = {
-    "signup": "gg.users.forms.CustomSignupForm",
+    'signup': 'gg.users.forms.CustomSignupForm',
 }
 
 # SLUGLIFIER
@@ -319,3 +353,17 @@ ADMIN_URL = r'^admin/'
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
 
+# HAYSTACK
+# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), '../whoosh_index'),
+    },
+}
+
+#HAYSTACK_SITECONF = os.path.join(os.path.dirname(__file__), 'search_sites'
+
+#HAYSTACK_SEARCH_ENGINE = 'whoosh'
+
+#HAYSTACK_WHOOSH_PATH = os.path.join(os.path.dirname(__file__), 'whoosh_index'

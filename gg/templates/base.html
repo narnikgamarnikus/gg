@@ -79,7 +79,7 @@
             {% endif %}            
           </ul>
 
-        <div id="app">
+        <div id="base">
           <div class="btn-group" :class="{show : dropDown}">
             <input class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" v-model="q" data-toggle="dropdown" aria-haspopup="true" :aria-expanded="{true : dropDown}">
               <div class="dropdown-menu">
@@ -119,14 +119,6 @@
 
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
-
-
-
-
-
-
-
-
       {% endblock content %}
 
   
@@ -172,8 +164,8 @@
 
       Vue.http.headers.common['X-CSRF-TOKEN'] = csrftoken
 
-      var app = new Vue({
-        el: '#app',
+      var base = new Vue({
+        el: '#base',
         delimiters: ["#{", "}"],
         data: {
           searchendpoint: 'http://' + window.location.host + '/search/autocomplete/?q=',

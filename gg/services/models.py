@@ -4,6 +4,9 @@ from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+from djmoney.models.fields import MoneyField
+from gg.crm.models import Base
 
 
 @python_2_unicode_compatible
@@ -50,3 +53,28 @@ class Service(MPTTModel):
 
     def get_absolute_url(self):
     	return reverse('services:detail', kwargs={'slug': self.slug})
+
+
+class PriceList(Base):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, null=True, blank=True, 
+        related_name='executant_price')
+    #trouble = models.ManyToManyField('service.Trouble', blank=True, 
+    #    verbose_name='Проблема', related_name='executant_price')
+    #time = models.TimeField(null=True, blank=True, 
+    #    verbose_name='Время, за которое осуществляется услуга за указанную сумму')
+    from_price = MoneyField(max_digits=10, decimal_places=2, default_currency='BYN',
+        null=True)
+    to_price = MoneyField(max_digits=10, decimal_places=2, default_currency='BYN',
+        null=True)
+    above_price = MoneyField(max_digits=10, decimal_places=2, default_currency='BYN',
+        null=True)
+    
+    def __str__(self):
+        if self.pk:
+            return 'Service: %s' % str(self.pk)
+    
+    #class Meta:
+    #    verbose_name = "Прейскурант цен"
+    #    verbose_name_plural = "Прейскурант цен"

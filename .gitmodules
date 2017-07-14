@@ -1,3 +1,6 @@
 [submodule "compose/docker-postgis"]
 	path = compose/docker-postgis
 	url = https://github.com/kartoza/docker-postgis.git
+[submodule "compose/docker-mdillon-postgis"]
+	path = compose/docker-mdillon-postgis
+	url = https://github.com/appropriate/docker-postgis.git

@@ -20,28 +20,48 @@
           </a>
         {% endfor %}
     </div>
-    <div class="col-sm-3 offset-sm-1 sidebar-offcanvas">
-      <form action="{% url 'crm:assignment_list' %}">
+    <div class="col-sm-3 offset-sm-1 sidebar-offcanvas" id="assignment_list">
+      <form action="{% url 'crm:assignment_list' %}" id="assignment_list_form">
         <fieldset class="form-group">
           <legend>{% trans 'Assignments type' %}</legend>
+          <formradiobox input-name="{% trans 'In' %}" input-value="in" input-checked=""></formradiobox>
+          <formradiobox input-name="{% trans 'Out' %}" input-value="out" input-checked=""></formradiobox>
         </fieldset>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="type" id="optionsRadios1" value="in">
-            In
-          </label>
-        </div>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="radio" class="form-check-input" name="type" id="optionsRadios1" value="out">
-            Out
-          </label>
-        </div>
-        <button type="submit">Submit</button>
       </form>
     </div>
   </div>
 </div>
 {% endblock content %}
 
+{% block included_javascript %}
+      <script type="text/x-template" id="formradiobox">
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="type" :value="inputValue" @click.prevented="submitForm">
+            #{ inputName }
+          </label>
+        </div>
+      </script>
+      <script type="text/javascript">
+
+      Vue.component('formradiobox', {
+        props: ['inputName', 'inputValue'],
+        delimiters: ["#{", "}"],
+        template: '#formradiobox',
+        methods: {
+          submitForm: function(e) {
+            document.getElementById('assignment_list_form').submit()
+          }
+        }
+      })
+
+      var assignment_list = new Vue({
+        el: '#assignment_list',
+        delimiters: ["#{", "}"],
+        })
+
+      </script>
+
+
+{% endblock included_javascript %}
 

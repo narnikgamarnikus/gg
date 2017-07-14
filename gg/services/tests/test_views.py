@@ -9,7 +9,7 @@ class BaseServiceTestCase(TestCase):
         self.service = Service.objects.create(slug='testservice', name='testservice')
         self.factory = RequestFactory()
 
-
+'''
 class TestServiceRedirectView(BaseServiceTestCase):
 
     def test_get_redirect_url(self):
@@ -27,7 +27,7 @@ class TestServiceRedirectView(BaseServiceTestCase):
             view.get_redirect_url(),
             '/services/testservice/'
         )
-
+'''
 
 
 class TestServiceUpdateView(BaseServiceTestCase):
@@ -43,18 +43,11 @@ class TestServiceUpdateView(BaseServiceTestCase):
         request.service = self.service
         # Attach the request to the view
         self.view.request = request
-
-    def test_get_success_url(self):
+    
+    def test_get_absolute_url(self):
         # Expect: '/services/testservice/', as that is the default service slug for
         #   self.service
         self.assertEqual(
-            self.view.get_success_url(),
+            self.view.model.get_absolute_url(self.service),
             '/services/testservice/'
-        )
-
-    def test_get_object(self):
-        # Expect: self.service, as that is the request's service object
-        self.assertEqual(
-            self.view.get_object(),
-            self.service
         )

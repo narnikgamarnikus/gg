@@ -5,7 +5,7 @@
 
 {% block content %}
   <h1>{{ service.name }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'services:update' service.slug %}">
+  <form class="form-horizontal" method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="control-group">
