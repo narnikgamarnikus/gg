@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}PriceList{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>PriceList</h2>
+
+  <div class="list-group">
+    {% for pricelist in pricelist_list %}
+      <a href="{% url 'users:pricelist_detail' pricelist.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+      	<div class="d-flex w-100 justify-content-between">
+      	  <h5 class="mb-1">{{ pricelist.from_price }} {{ pricelist.to_price }} {{ price_list.above_price }}</h5>
+      	  
+          <small>{{ user.reputation }}</small>
+    	</div>
+    	<p class="mb-1"></p>
+    	<small>{{ pricelist.service }}</small>
+  	  </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

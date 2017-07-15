@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse, resolve
-
+from .factories import PriceListFactory
 from test_plus.test import TestCase
 
 
@@ -8,6 +8,7 @@ class TestUserURLs(TestCase):
 
     def setUp(self):
         self.user = self.make_user()
+        self.pricelist = PriceListFactory.create()
 
     def test_list_reverse(self):
         """users:list should reverse to /users/."""
@@ -49,3 +50,36 @@ class TestUserURLs(TestCase):
             resolve('/users/~update/').view_name,
             'users:update'
         )
+
+    def test_pricelist_update_reverse(self):
+        """users:pricelist should reverse to /users/~update/."""
+        self.assertEqual(reverse('users:pricelist_update'), '/users/profile/~pricelist/')
+
+    def test_pricelist_update_resolve(self):
+        """/users/~update/ should resolve to users:pricelist."""
+        self.assertEqual(
+            resolve('/users/profile/~pricelist/').view_name,
+            'users:pricelist_update'
+        )
+
+    
+    def test_detail_pricelist_reverse(self):
+        """users:detail should reverse to /users/testuser/."""
+        self.assertEqual(
+            reverse('users:pricelist_detail', kwargs={'pk': self.pricelist.pk}),
+            '/users/profile/pricelist/{}/'.format(self.pricelist.pk)
+        )
+
+    def test_detail_pricelist_resolve(self):
+        """/users/pricelist/1/ should resolve to users:detail_pricelist."""
+        self.assertEqual(resolve('/users/profile/pricelist/{}/'.format(self.pricelist.pk)).view_name,
+         'users:pricelist_detail')
+    
+
+    def test_list_pricelist_reverse(self):
+        """users:pricelistlist should reverse to /users/pricelist/."""
+        self.assertEqual(reverse('users:pricelist_list'), '/users/profile/pricelist/')
+
+    def test_list_pricelist_resolve(self):
+        """/users/pricelist/ should resolve to users:pricelist."""
+        self.assertEqual(resolve('/users/profile/pricelist/').view_name, 'users:pricelist_list')

@@ -1,10 +1,11 @@
 from django.test import RequestFactory
-
+from .factories import PriceListFactory
 from test_plus.test import TestCase
 
 from ..views import (
     UserRedirectView,
-    UserUpdateView
+    UserUpdateView,
+    PriceListUpdateView,
 )
 
 
@@ -13,6 +14,7 @@ class BaseUserTestCase(TestCase):
     def setUp(self):
         self.user = self.make_user()
         self.factory = RequestFactory()
+        self.service = PriceListFactory.create()
 
 
 class TestUserRedirectView(BaseUserTestCase):
@@ -62,3 +64,19 @@ class TestUserUpdateView(BaseUserTestCase):
             self.view.get_object(),
             self.user
         )
+
+
+
+class TestPriceListUpdateView(BaseUserTestCase):
+
+    def setUp(self):
+        # call BaseUserTestCase.setUp()
+        super(TestPriceListUpdateView, self).setUp()
+        # Instantiate the view directly. Never do this outside a test!
+        self.view = TestPriceListUpdateView()
+        # Generate a fake request
+        request = self.factory.get('/fake-url')
+        # Attach the user to the request
+        request.user = self.user
+        # Attach the request to the view
+        self.view.request = request
