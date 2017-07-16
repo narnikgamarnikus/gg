@@ -49,5 +49,5 @@ class TestServiceUpdateView(BaseServiceTestCase):
         #   self.service
         self.assertEqual(
             self.view.model.get_absolute_url(self.service),
-            '/services/testservice/'
+            '/en/services/testservice/'
         )

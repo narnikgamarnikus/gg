@@ -53,16 +53,18 @@
     Autocomplete.prototype.show_results = function(data) {
       // Remove any existing results.
       $('.ac-results').remove()
-      var results = data.results || []
-      var results_wrapper = $('<div class="ac-results"></div>')
-      var base_elem = $('<div class="result-wrapper"><a href="#" class="ac-result"></a></div>')
+      //var results = data.results || []
+      var results = data
+      var results_wrapper = $('<div class="ac-results dropdown-menu"></div>')
+      var base_elem = $('<div class="result-wrapper btn dropdown-item ac-result"><a href="#" class="btn dropdown-item ac-result"></a></div>')
+
 
       if (Object.keys(results).length > 0) {
         for(var res_offset in results) {
           var elem = base_elem.clone()
           // Don't use .html(...) here, as you open yourself to XSS.
           // Really, you should use some form of templating.
-          elem.find('.ac-result').text(res_offset).attr("href", results[res_offset])
+          elem.find('.ac-result').text(results[res_offset]['title']).attr("href", results[res_offset]['link'])
           results_wrapper.append(elem)
         }
       }

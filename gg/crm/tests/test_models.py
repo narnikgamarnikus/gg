@@ -17,5 +17,5 @@ class TestAssignment(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual(
             self.assignment.get_absolute_url(),
-            '/crm/{}/'.format(self.assignment.slug)
+            '/ru-ru/crm/{}/'.format(self.assignment.slug)
         )

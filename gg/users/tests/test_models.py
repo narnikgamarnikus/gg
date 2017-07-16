@@ -15,17 +15,17 @@ class TestUser(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual(
             self.user.get_absolute_url(),
-            '/users/testuser/'
+            '/en/users/testuser/'
         )
 
 
 class TestPriceList(TestCase):
 
     def setUp(self):
-        self.service = PriceListFactory.create()
+        self.pricelist = PriceListFactory.create()
 
     def test__str__(self):
         self.assertEqual(
-            self.service.__str__(),
-            'Service: {}'.format(self.service.pk)
+            self.pricelist.__str__(),
+            'Service: {}'.format(self.pricelist.service.name)
             )

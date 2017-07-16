@@ -18,6 +18,21 @@ Issues with the above approach:
 3. Really Unforgiving: No way to override this behavior
 4. Undocumented: No mention in the documentation, or it's too hard for me to find
 */
-//$('.form-group').removeClass('row');
+$('.form-group').removeClass('row');
+
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+function openNav() {
+	document.getElementById("mySidenav").style.width = "250px";
+	document.getElementById("main").style.marginLeft = "250px";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+function closeNav() {
+	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("main").style.marginLeft = "0";
+} 
+
+var csrftoken=Cookies.get("csrftoken")
+
 
 

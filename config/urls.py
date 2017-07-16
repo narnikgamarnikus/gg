@@ -7,7 +7,7 @@ from django.views import defaults as default_views
 from gg.crm import views as crmviews
 from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     #url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^$', crmviews.AssignmentCreateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^crm/', include('gg.crm.urls', namespace='crm')),
 
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -58,8 +58,8 @@ class PriceList(Base):
         null=True)
     
     def __str__(self):
-        if self.pk:
-            return 'Service: %s' % str(self.pk)
+        if self.service.name:
+            return 'Service: %s' % str(self.service.name)
     
     #class Meta:
     #    verbose_name = "Прейскурант цен"
