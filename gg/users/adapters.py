@@ -19,15 +19,15 @@ class AccountAdapter(DefaultAccountAdapter):
 		last_name = data.get('last_name')
 		email = data.get('email')
 		username = data.get('username')
-		role = data.get('role')
+		is_performer = data.get('is_performer')
 		user_email(user, email)
 		user_username(user, username)
 		if first_name:
 			user_field(user, 'first_name', first_name)
 		if last_name:
 			user_field(user, 'last_name', last_name)
-		if role:
-			user.role = role
+		if is_performer:
+			user.is_performer = is_performer
 		if 'password1' in data:
 			user.set_password(data["password1"])
 		else:

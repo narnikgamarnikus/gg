@@ -12,23 +12,9 @@ from gg.services.models import Service
 @python_2_unicode_compatible
 class User(AbstractUser):
 
-	EXECUTANT = 'executant'
-	CLIENT = 'client'   
-
-	USER_ROLES = (
-		(EXECUTANT, _('Executant')),
-		(CLIENT, _('Client')),
-	)
-
+	is_performer = models.BooleanField(default=False)
 	# First Name and Last Name do not cover name patterns
 	# around the globe.
-	role = MultiSelectField(
-		max_length=30, 
-		null=True,
-		choices=USER_ROLES,
-	)
-	is_performer = models.BooleanField(default=False)
-	is_client = models.BooleanField(default=False)
 	name = models.CharField(_('Name of User'), blank=True, max_length=255)
 	balance = models.PositiveSmallIntegerField(default=0)
 

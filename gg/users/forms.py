@@ -8,8 +8,8 @@ from crispy_forms.layout import HTML
 
 
 class CustomSignupForm(SignupForm):
-	role = forms.MultipleChoiceField(choices=User.USER_ROLES)
-
+	is_performer = forms.BooleanField(required=False)
+	
 	def __init__(self, *args, **kwargs):
 		super(CustomSignupForm, self).__init__(*args, **kwargs)
 		self.helper = FormHelper(self)
