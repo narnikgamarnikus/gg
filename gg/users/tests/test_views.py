@@ -6,6 +6,7 @@ from ..views import (
     UserRedirectView,
     UserUpdateView,
     PriceListUpdateView,
+    PriceListRedirectView,
 )
 
 
@@ -73,10 +74,29 @@ class TestPriceListUpdateView(BaseUserTestCase):
         # call BaseUserTestCase.setUp()
         super(TestPriceListUpdateView, self).setUp()
         # Instantiate the view directly. Never do this outside a test!
-        self.view = TestPriceListUpdateView()
+        self.view = PriceListUpdateView()
         # Generate a fake request
         request = self.factory.get('/fake-url')
         # Attach the user to the request
         request.user = self.user
         # Attach the request to the view
         self.view.request = request
+
+
+class TestPricelistRedirectView(BaseUserTestCase):
+
+    def test_get_redirect_url(self):
+        # Instantiate the view directly. Never do this outside a test!
+        view = PriceListRedirectView()
+        # Generate a fake request
+        request = self.factory.get('/fake-url')
+        # Attach the user to the request
+        request.user = self.user
+        # Attach the request to the view
+        view.request = request
+        # Expect: '/users/testuser/', as that is the default username for
+        #   self.make_user()
+        self.assertEqual(
+            view.get_redirect_url(),
+            '/en/users/pricelist/1/'
+        )

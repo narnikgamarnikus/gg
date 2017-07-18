@@ -15,6 +15,6 @@ class TestService(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual(
             self.service.get_absolute_url(),
-            '/en/services/testservice/'
+            '/ru-ru/services/testservice/'
         )
     

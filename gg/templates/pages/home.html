@@ -1,18 +1,16 @@
 {% extends "base.html" %}
-{% load assignment_form %}
 {% block content %}
 	<div class="container"  style="margin-top: 2rem">
-  {% load crispy_forms_tags i18n static %}
+  {% load proposal_form crispy_forms_tags i18n static %}
   <form class="login" method="POST" action="">
     {% csrf_token %}
     {{ form|crispy }}
     {% if redirect_field_value %}
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
-    <button class="primaryAction btn btn-primary" type="submit">{% trans "Create assignment" %}</button>
+    <button class="primaryAction btn btn-primary" type="submit">{% trans "Create proposal" %}</button>
   </form>
-    {% block  included_javascript %}
-    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    {% block included_javascript %}
     {{ form.media }}
     {% endblock included_javascript %}
 	</div>

@@ -3,10 +3,9 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-from multiselectfield import MultiSelectField
 from django.conf import settings
 from djmoney.models.fields import MoneyField
-from gg.crm.models import Base
+from gg.workflow.models import Base
 from gg.services.models import Service
 
 @python_2_unicode_compatible
@@ -28,7 +27,7 @@ class User(AbstractUser):
 
 @python_2_unicode_compatible
 class PriceList(Base):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
     service = models.ForeignKey(Service, null=True, blank=True, 
         related_name='executant_price')
@@ -46,9 +45,23 @@ class PriceList(Base):
     def __str__(self):
         if self.service.name:
             return 'Service: %s' % str(self.service.name)
-    
+
+    def get_absolute_url(self):
+        return reverse('users:pricelist_detail', kwargs={'pk': self.pk})
+
     #class Meta:
     #    verbose_name = "Прейскурант цен"
     #    verbose_name_plural = "Прейскурант цен"
+
+
+@python_2_unicode_compatible
+class Device(Base):
+    token_id = models.PositiveSmallIntegerField(default=0)
+    users = models.ManyToManyField(User)
+
+    def __str__(self):
+        if self.id:
+            return '%s' % str(self.id)
+
 
 from gg.users import meta_badges

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags i18n static %}
+<form class="login" method="POST" action="{% url 'workflow:assignment_create' %}">
+  {% csrf_token %}
+  {{ proposal_form|crispy }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="primaryAction btn btn-primary" type="submit">{% trans "Create proposal" %}</button>
+</form>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{ proposal_form.media }}

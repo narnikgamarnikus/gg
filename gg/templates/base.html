@@ -1,4 +1,4 @@
-{% load staticfiles i18n compress account socialaccount %}<!DOCTYPE html>
+{% load staticfiles i18n compress account socialaccount avatar_tags %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -28,83 +28,72 @@
   <body>
 
 
-    <div id="mySidenav" class="sidenav bg-primary">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+    <div {% if request.COOKIES.mySidenav  %} style="width: 250px;"{% endif %} id="mySidenav" class="sidenav bg-primary" >
+      <li class="nav-item">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="margin-top: 2rem; text-decoration: none">&times;</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">{% trans 'Home' %}<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">{% trans 'About' %}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'services:list' %}">{% trans 'Services' %}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'workflow:proposal_list' %}">{% trans 'Proposal' %}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users:list' %}">{% trans 'Executsnts' %}</a>
+      </li>                      
     </div>
-    <div id="main" style="padding: 0">
+    <div id="main" style="padding: 0" {% if request.COOKIES.mySidenav  %} class="mainOpen"{% endif %}>
     <div class="m-b-1">
-      <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-primary">
         <a class="navbar-brand" href="{% url 'home' %}">gg</a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">{% trans 'Home' %}<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">{% trans 'About' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'services:list' %}">{% trans 'Services' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'crm:assignment_list' %}">{% trans 'Assignments' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:list' %}">{% trans 'Executsnts' %}</a>
-            </li>            
-            {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-              </li>
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-              </li>
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-              </li>
-            {% endif %}            
-          </ul>
-          <form method="post" action="/search/">
-            <div class="btn-group show autocomplete-me">
-            <input class="form-control mr-sm-2" placeholder="{% trans 'Search' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" type="text" id="id_q" name="q">
-            <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" value="{% trans 'Search' %}">
-            </div>
-          </form>
-          <form action="{% url 'set_language' %}" method="post" class="form-inline my-2 my-lg-0">{% csrf_token %}
+          
+          <div class="hidden-md-down btn-group autocomplete-me col-lg-6" style="margin-left: 20rem">
+            <input autocomplete="off" class="form-control mr-sm-8 mr-lg-8" placeholder="{% trans 'Search' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="text" id="id_q" name="q">
+          </div>
+          
+          <form action="{% url 'set_language' %}" method="post" class="hidden-md-down form-inline my-2 my-lg-0">{% csrf_token %}
             <input name="next" type="hidden" value="{{ redirect_to }}" class="form-control mr-sm-2" />
               <select name="language" class="custom-select mb-2 mr-sm-2 mb-sm-0">
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
                 {% get_language_info_list for LANGUAGES as languages %}
                 {% for language in languages %}
-                  <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                  </option>
+                <option onclick="this.form.submit()" value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                  {{ language.name_local }} ({{ language.code }})
+                </option>
                 {% endfor %}
-                <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" value="{% trans 'Go' %}" />
               </select>
           </form> 
-        </div>
+
+          <div class="hidden-md-down navbar-toggler-right dropdown">
+            <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% avatar request.user 45 class="rounded-circle" id="user_avatar" %}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin: .125rem 0 0 -5rem">
+              {% if request.user.is_authenticated %}
+                <a class="dropdown-item" href="#" id="subscribe">{% trans 'Subscribe' %}</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+                {% else %}
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="sign-up-link" class="dropdown-item" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="log-in-link" class="dropdown-item" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+              {% endif %}  
+            </div>
+          </div>
       </nav>
     </div>
     <div class="container">
-    <span onclick="openNav()">open</span>
+    <span id="opener" onclick="openNav()" style="margin-top: 5rem; display: {% if request.COOKIES.mySidenav  %}none{% else %}block{% endif %}">open</span>
       {% if messages %}
           {% for message in messages %}
               <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
@@ -130,12 +119,15 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js" integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
       <!-- Your stuff: Third-party javascript libraries go here -->
       <!-- place project specific Javascript in this file -->
       {% compress js %}
       <script src="{% static 'js/project.js' %}"></script>
       <script src="{% static 'js/search.js' %}"></script>
+      <script src="{% static 'js/firebase_subscribe.js' %}"></script>
       {% endcompress %}
+      {% if user.is_authenticated %}<script type="text/javascript">var user_id = {{ user.id }};</script>{% endif %}
       {% block included_javascript %}
       {% endblock included_javascript %}
 

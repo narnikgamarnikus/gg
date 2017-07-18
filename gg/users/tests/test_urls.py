@@ -8,7 +8,7 @@ class TestUserURLs(TestCase):
 
     def setUp(self):
         self.user = self.make_user()
-        self.pricelist = PriceListFactory.create()
+        #self.pricelist = PriceListFactory.create()
 
     def test_list_reverse(self):
         activate('en')
@@ -59,6 +59,7 @@ class TestUserURLs(TestCase):
             'users:update'
         )
 
+    '''
     def test_pricelist_update_reverse(self):
         activate('en')
         """users:pricelist should reverse to /users/~update/."""
@@ -97,3 +98,4 @@ class TestUserURLs(TestCase):
         activate('en')
         """/users/pricelist/ should resolve to users:pricelist."""
         self.assertEqual(resolve('/en/users/profile/pricelist/').view_name, 'users:pricelist_list')
+    '''

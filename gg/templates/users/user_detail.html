@@ -14,6 +14,18 @@
         <p>{{ object.name }}</p>
       {% endif %}
 
+      {% load badges_tags %}
+      <span class="badge">
+      {% for level in object|badge_count %}
+        {% if level.count %}
+          <span style="color: green" title="{{level.count}} {{level.badge__level|level_title}} badge{{level.count|pluralize}}"><span style="color: red" class="level_{{level.badge__level}} metal">●</span>{{level.count}}</span>
+        {% endif %}
+      {% endfor %}
+      </span>
+
+      {% load hitcount_tags %}
+      <span style="color: yellow">{% get_hit_count for object %}</span>
+
     </div>
   </div>
 
@@ -22,6 +34,8 @@
 <div class="row">
 
   <div class="col-sm-12">
+    <a class="btn btn-primary" href="{% url 'avatar_change' %}">{% trans 'Change avatar' %}</a>
+    <a class="btn btn-primary" href="{% url 'users:pricelist_list' %}">{% trans 'Change pricelist' %}</a>
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">{% trans 'My Info' %}</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">{% trans 'E-Mail' %}</a>
     <!-- Your Stuff: Custom user template urls -->

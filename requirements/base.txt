@@ -66,12 +66,11 @@ django-autocomplete-light==3.2.3
 django-querysetsequence==0.7.2
 django-cachalot==1.4.1
 django-avatar==3.1.0
-django-multiselectfield
 django-annoying==0.10.3
 django-hitcount==1.2.2
-bleach
 django-filter
 django-cities
 django-jinja
 django-money==0.10.2
 django-money-rates==0.3.1
+django-multiselectfield

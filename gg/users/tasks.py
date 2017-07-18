@@ -9,24 +9,16 @@ from django.db.models.signals import pre_save, post_save
 
 
 @periodic_task(run_every=timedelta(days=30))
-def changed_client_balance(user_pk):
+def changed_user_balance(user_pk):
 	user = get_object_or_None(User, pk=user_pk)
-	if user:
+	if user.is_performer:
+		user.balance = 60
+	else:
 		user.balance = 0
 	return user
 
 
-@periodic_task(run_every=timedelta(days=30))
-def changed_executant_balance(user_pk):
-	user = get_object_or_None(User, pk=user_pk)
-	if user:
-		user.balance = 60
-	return user
-
 @receiver(post_save, sender=User)
 def create_user(sender, instance, created, **kwargs):
-	if created and instance.role:
-		if 'executant' in instance.role[:]:
-			changed_executant_balance(instance.id)
-		else:
-			changed_client_balance(instance.id)
+	if created:
+		changed_user_balance(instance.id)

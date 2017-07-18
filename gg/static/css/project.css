@@ -109,6 +109,7 @@
 .sidenav {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
+    margin-left: 0px; /* 0 margin-left width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
@@ -117,7 +118,6 @@
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
-
 /* The navigation menu links */
 .sidenav a {
     padding: 8px 8px 8px 32px;
@@ -146,6 +146,9 @@
 #main {
     transition: margin-left .5s;
     padding: 20px;
+}
+.mainOpen {
+  margin-left: 250px;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

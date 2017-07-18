@@ -56,11 +56,13 @@
       //var results = data.results || []
       var results = data
       var results_wrapper = $('<div class="ac-results dropdown-menu"></div>')
-      var base_elem = $('<div class="result-wrapper btn dropdown-item ac-result"><a href="#" class="btn dropdown-item ac-result"></a></div>')
+      var base_elem = $('<div class="result-wrapper dropdown-item ac-result" style="width: 49rem"><a href="#" class="btn dropdown-item ac-result"></a></div>')
 
 
       if (Object.keys(results).length > 0) {
         for(var res_offset in results) {
+          $('.autocomplete-me').addClass('show')
+          $('#id_q').attr("aria-expanded","true")
           var elem = base_elem.clone()
           // Don't use .html(...) here, as you open yourself to XSS.
           // Really, you should use some form of templating.
@@ -69,11 +71,12 @@
         }
       }
       else {
+        $('.autocomplete-me').removeClass('show')
+        $('#id_q').attr("aria-expanded","false")
         var elem = base_elem.clone()
         elem.text("No results found.")
         results_wrapper.append(elem)
       }
-
       this.query_box.after(results_wrapper)
     }
 

@@ -60,6 +60,7 @@ THIRD_PARTY_APPS = [
     'django_filters', #models filters 
     'djmoney', # django-money https://github.com/django-money/django-money
     'djmoney_rates', # django-money-rates https://github.com/evonove/django-money-rates
+    'hitcount', # http://django-hitcount.readthedocs.io/en/latest/installation.html
 
 ]
 
@@ -69,7 +70,7 @@ LOCAL_APPS = [
     'gg.users.apps.UsersConfig',
     # Your stuff: custom apps go here
     'gg.services.apps.ServicesConfig',
-    'gg.crm.apps.CMRConfig',
+    'gg.workflow.apps.WorkflowConfig',
     'gg.badges.apps.BadgesConfig'
 
 ]
@@ -175,9 +176,14 @@ USE_TZ = True
 TEMPLATES = [
     {
     'BACKEND': 'django_jinja.backend.Jinja2',
+    'DIRS': [
+        str(APPS_DIR.path('templates')),
+    ],
     'APP_DIRS': True,
     'OPTIONS': {
         'match_extension': '.jinja',
+        'match_regex': r'^(?!admin/).*',
+        'app_dirname': 'templates',
         'context_processors': [
             'django.template.context_processors.debug',
             'django.template.context_processors.request',
@@ -190,19 +196,28 @@ TEMPLATES = [
             # Your stuff: custom template context processors go here
             'users.context_processors.allauth_popup.allauth_popup'
             ],
-        'extensions': [
-            'jinja2.ext.do',
-            'jinja2.ext.loopcontrols',
-            'jinja2.ext.with_',
-            'jinja2.ext.i18n',
-            'jinja2.ext.autoescape',
-            'django_jinja.builtins.extensions.CsrfExtension',
-            'django_jinja.builtins.extensions.CacheExtension',
-            'django_jinja.builtins.extensions.TimezoneExtension',
-            'django_jinja.builtins.extensions.UrlsExtension',
-            'django_jinja.builtins.extensions.StaticFilesExtension',
-            'django_jinja.builtins.extensions.DjangoFiltersExtension',
+            "extensions": [
+                'jinja2.ext.do',
+                'jinja2.ext.loopcontrols',
+                'jinja2.ext.with_',
+                'jinja2.ext.i18n',
+                'jinja2.ext.autoescape',
+                'django_jinja.builtins.extensions.CsrfExtension',
+                'django_jinja.builtins.extensions.CacheExtension',
+                'django_jinja.builtins.extensions.TimezoneExtension',
+                'django_jinja.builtins.extensions.UrlsExtension',
+                'django_jinja.builtins.extensions.StaticFilesExtension',
+                'django_jinja.builtins.extensions.DjangoFiltersExtension',
+                'compressor.contrib.jinja2ext.CompressorExtension'
             ],
+            'bytecode_cache': {
+                'name': 'default',
+                'backend': 'django_jinja.cache.BytecodeCache',
+                'enabled': False,
+            },
+            'autoescape': True,
+            'auto_reload': DEBUG,
+            'translation_engine': 'django.utils.translation',
         },
     },
     {
@@ -367,3 +382,25 @@ HAYSTACK_CONNECTIONS = {
 #HAYSTACK_SEARCH_ENGINE = 'whoosh'
 
 #HAYSTACK_WHOOSH_PATH = os.path.join(os.path.dirname(__file__), 'whoosh_index'
+
+# CACHALOT SETTINGS
+# ------------------------------------------------------------------------------
+CACHALOT_ENABLED = False
+CACHALOT_TIMEOUT = None
+CACHALOT_CACHE_RANDOM = False
+CACHALOT_INVALIDATE_RAW = True
+CACHALOT_ONLY_CACHABLE_TABLES = frozenset()
+
+# AVATAR SETTINGS
+# ------------------------------------------------------------------------------
+AVATAR_GRAVATAR_DEFAULT = 'identicon'
+
+# DJANGO_MONEY_RATES SETTINGS 
+# ------------------------------------------------------------------------------
+
+DJANGO_MONEY_RATES = {
+    'DEFAULT_BACKEND': 'djmoney_rates.backends.OpenExchangeBackend',
+    'OPENEXCHANGE_URL': 'http://openexchangerates.org/api/latest.json',
+    'OPENEXCHANGE_APP_ID': 'd7f21191cfa74010996bfc70c673e36f',
+    'OPENEXCHANGE_BASE_CURRENCY': 'USD',
+}

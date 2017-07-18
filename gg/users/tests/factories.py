@@ -12,7 +12,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class PriceListFactory(factory.django.DjangoModelFactory):
-	user = factory.SubFactory(UserFactory)
+	created_by = factory.SubFactory(UserFactory)
 	service = factory.SubFactory(ServiceFactory)
 	from_price = 15.35
 	to_price = 17.45
