@@ -6,5 +6,4 @@ class UsersConfig(AppConfig):
     verbose_name = "Users"
 
     def ready(self):
-    	import gg.users.signals
-    	import gg.users.tasks
+    	pass

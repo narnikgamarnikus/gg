@@ -1,7 +1,31 @@
 from django.test import RequestFactory
 from test_plus.test import TestCase
+from .factories import PriceListFactory, ServiceFactory, ServiceUserFactory, UserFactory
 from ..models import Service
-from ..views import ServiceUpdateView, ServiceRedirectView
+from ..views import (
+    ServiceUpdateView,
+    PriceListUpdateView,
+    ServiceUserDetailView
+    )
+
+
+class TestServiceUserDetailView(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.service_user = ServiceUserFactory.create()
+        self.view = ServiceUserDetailView()
+        request = self.factory.get('/fake-url')
+        request.user = self.service_user
+        self.view.request = request
+
+    def test_get_object(self):
+        self.assertEqual(
+            self.view.model.get_object(self.service_user),
+            '/en/services/profile/{}/'.format(self.service_user)
+            )
+
+
 
 class BaseServiceTestCase(TestCase):
 
@@ -47,7 +71,95 @@ class TestServiceUpdateView(BaseServiceTestCase):
     def test_get_absolute_url(self):
         # Expect: '/services/testservice/', as that is the default service slug for
         #   self.service
+        print('SERVICE SLUG IS: ' + str(self.service.slug))
         self.assertEqual(
             self.view.model.get_absolute_url(self.service),
-            '/en/services/testservice/'
+            '/en/services/service/{}/'.format(self.service.slug)
         )
+
+
+
+class TestPriceListUpdateView(BaseServiceTestCase):
+
+    def setUp(self):
+        # call BaseServiceTestCase.setUp()
+        super(TestPriceListUpdateView, self).setUp()
+        # Instantiate the view directly. Never do this outside a test!
+        self.view = PriceListUpdateView()
+        # Generate a fake request
+        request = self.factory.get('/fake-url')
+        # Attach the user to the request
+        request.user = self.user
+        # Attach the request to the view
+        self.view.request = request
+
+'''
+class TestPricelistRedirectView(BaseServiceTestCase):
+
+    def test_get_redirect_url(self):
+        # Instantiate the view directly. Never do this outside a test!
+        view = PriceListRedirectView()
+        # Generate a fake request
+        request = self.factory.get('/fake-url')
+        # Attach the user to the request
+        request.user = self.user
+        # Attach the request to the view
+        view.request = request
+        # Expect: '/users/testuser/', as that is the default username for
+        #   self.make_user()
+        self.assertEqual(
+            view.get_redirect_url(),
+            '/en/users/pricelist/1/'
+        )
+'''
+
+
+
+'''
+class TestPriceList(TestCase):
+
+    def setUp(self):
+        self.pricelist = PriceListFactory.create()
+
+    def test__str__(self):
+        self.assertEqual(
+            self.pricelist.__str__(),
+            'Service: {}'.format(self.pricelist.service.name)
+            )
+'''
+
+
+'''
+from django.test import RequestFactory
+from test_plus.test import TestCase
+from .factories import AssignmentFactory
+from ..views import (
+    AssignmentRedirectView,
+    AssignmentUpdateView
+)
+
+
+class BaseAssignmentTestCase(TestCase):
+
+    def setUp(self):
+        self.user = self.AssignmentFactory()
+        self.factory = RequestFactory()
+
+
+class TestAssignmentRedirectView(BaseAssignmentTestCase):
+
+    def test_get_redirect_url(self):
+        # Instantiate the view directly. Never do this outside a test!
+        view = AssignmentRedirectView()
+        # Generate a fake request
+        request = self.factory.get('/fake-url')
+        # Attach the user to the request
+        request.user = self.user
+        # Attach the request to the view
+        view.request = request
+        # Expect: '/workflow/slug-0/', as that is the default slug from factory
+        self.assertEqual(
+            view.get_redirect_url(),
+            '/workflow/slug-0/'
+        )
+'''

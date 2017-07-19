@@ -4,18 +4,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
-from gg.workflow import views as workflowviews
 from django.conf.urls.i18n import i18n_patterns
 from django.views.decorators.cache import cache_control
 
 
 urlpatterns = i18n_patterns(
-    #url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    url(r'^firebase-messaging-sw.js', cache_control(max_age=2592000)(TemplateView.as_view(template_name="firebase-messaging-sw.js",
-        content_type='application/javascript')
-    ), name='firebase-messaging-sw.js'),
-
-    url(r'^$', workflowviews.ProposalCreateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
@@ -29,7 +23,6 @@ urlpatterns = i18n_patterns(
     # Your stuff: custom urls includes go here
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^search/', include('gg.search.urls', namespace='search')),
-    url(r'^workflow/', include('gg.workflow.urls', namespace='workflow')),
     url(r'^avatar/', include('avatar.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

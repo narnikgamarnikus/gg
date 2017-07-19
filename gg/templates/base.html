@@ -93,7 +93,7 @@
       </nav>
     </div>
     <div class="container">
-    <span id="opener" onclick="openNav()" style="margin-top: 5rem; display: {% if request.COOKIES.mySidenav  %}none{% else %}block{% endif %}">open</span>
+    <span id="opener" class="other" onclick="openNav()" style="margin-top: 5rem; display: {% if request.COOKIES.mySidenav  %}none{% else %}block{% endif %}">open</span>
       {% if messages %}
           {% for message in messages %}
               <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>

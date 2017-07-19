@@ -74,3 +74,4 @@ django-jinja
 django-money==0.10.2
 django-money-rates==0.3.1
 django-multiselectfield
+django-geoposition

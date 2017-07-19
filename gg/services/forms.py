@@ -1,11 +1,11 @@
-from .models import Proposal
+from .models import Job
 from django import forms
 from dal import autocomplete
 
 
-class ProposalForm(forms.ModelForm):
+class JobForm(forms.ModelForm):
 	class Meta:
-		model = Proposal
+		model = Job
 		exclude = ('state', 'slug', 'is_removed', 'created_by')
 		widgets = {
 			'services': autocomplete.ModelSelect2Multiple(url='crm:services-autocomplete')

@@ -61,7 +61,7 @@ THIRD_PARTY_APPS = [
     'djmoney', # django-money https://github.com/django-money/django-money
     'djmoney_rates', # django-money-rates https://github.com/evonove/django-money-rates
     'hitcount', # http://django-hitcount.readthedocs.io/en/latest/installation.html
-
+    'geoposition', # https://github.com/philippbosch/django-geoposition
 ]
 
 # Apps specific for this project go here.
@@ -70,9 +70,7 @@ LOCAL_APPS = [
     'gg.users.apps.UsersConfig',
     # Your stuff: custom apps go here
     'gg.services.apps.ServicesConfig',
-    'gg.workflow.apps.WorkflowConfig',
-    'gg.badges.apps.BadgesConfig'
-
+    'gg.badges.apps.BadgesConfig',
 ]
 
 # Apps that you want to connect to the main.
@@ -342,10 +340,6 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'users:redirect'
 LOGIN_URL = 'account_login'
 
-ACCOUNT_FORMS = {
-    'signup': 'gg.users.forms.CustomSignupForm',
-}
-
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
@@ -404,3 +398,12 @@ DJANGO_MONEY_RATES = {
     'OPENEXCHANGE_APP_ID': 'd7f21191cfa74010996bfc70c673e36f',
     'OPENEXCHANGE_BASE_CURRENCY': 'USD',
 }
+
+
+# DJANGO_GEOPOSITION SETTINGS
+# ------------------------------------------------------------------------------
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBO-_WYrcSrU79tLuKPiINGkCJ1e__RWWw'
+
+# SERVICES SETTINGS
+# ------------------------------------------------------------------------------
+USER_MOUNTHLY_BALANCE = 10
