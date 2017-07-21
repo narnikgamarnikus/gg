@@ -14,9 +14,9 @@
     <![endif]-->
 
     {% block css %}
-    <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <!-- Latest compiled and minified Materialize CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css" media="screen,projection" />
     <!-- Your stuff: Third-party CSS libraries go here -->
     {% compress css %}
     <!-- This file stores project-specific CSS -->
@@ -24,108 +24,284 @@
     {% endcompress %}
     {% endblock %}
   </head>
-
   <body>
-
-
-    <div {% if request.COOKIES.mySidenav  %} style="width: 250px;"{% endif %} id="mySidenav" class="sidenav bg-primary" >
-      <li class="nav-item">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="margin-top: 2rem; text-decoration: none">&times;</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'home' %}">{% trans 'Home' %}<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'about' %}">{% trans 'About' %}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'services:list' %}">{% trans 'Services' %}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'workflow:proposal_list' %}">{% trans 'Proposal' %}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'users:list' %}">{% trans 'Executsnts' %}</a>
-      </li>                      
-    </div>
-    <div id="main" style="padding: 0" {% if request.COOKIES.mySidenav  %} class="mainOpen"{% endif %}>
-    <div class="m-b-1">
-      <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-primary">
-        <a class="navbar-brand" href="{% url 'home' %}">gg</a>
-          
-          <div class="hidden-md-down btn-group autocomplete-me col-lg-6" style="margin-left: 20rem">
-            <input autocomplete="off" class="form-control mr-sm-8 mr-lg-8" placeholder="{% trans 'Search' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="text" id="id_q" name="q">
+  
+  <header>
+      <div class="navbar-fixed">
+        <nav class="cyan accent-4">
+          <div class="nav-wrapper">
+            <ul class="left">
+              <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            </ul>
+            <ul class="right">
+            <li><a href="#modal1" class="modal-trigger"><i class="material-icons">search</i></a></li>
+            <li><a href="mobile.html"><i class="material-icons">notifications</i></a></li>
+              <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+            </ul>
           </div>
-          
-          <form action="{% url 'set_language' %}" method="post" class="hidden-md-down form-inline my-2 my-lg-0">{% csrf_token %}
-            <input name="next" type="hidden" value="{{ redirect_to }}" class="form-control mr-sm-2" />
-              <select name="language" class="custom-select mb-2 mr-sm-2 mb-sm-0">
-                {% get_current_language as LANGUAGE_CODE %}
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                {% for language in languages %}
-                <option onclick="this.form.submit()" value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                  {{ language.name_local }} ({{ language.code }})
-                </option>
-                {% endfor %}
-              </select>
-          </form> 
+        </nav>
+      </div>
+  </header>
 
-          <div class="hidden-md-down navbar-toggler-right dropdown">
-            <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {% avatar request.user 45 class="rounded-circle" id="user_avatar" %}
+      <ul id="slide-out" class="side-nav">
+      <div class="user-view">
+        <div class="background">
+            <img src="http://demo.geekslabs.com/materialize/v3.1/images/user-bg.jpg">
+        </div>
+        <div class="row valign-wrapper">
+          <div class="col col s4 m4 l4">
+              {% avatar request.user 65 class="circle" id="user_avatar" %}
+          </div>
+          <div class="col col s8 m8 l8">
+            <a class="dropdown-button waves-effect waves-light btn-flat white-text" href="#" data-activates="profile-dropdown">
+                <i class="material-icons right">arrow_drop_down</i>
+                {% if request.user.is_authenticated %}{{ user.username }}{% else %}{% trans 'Account' %}{% endif %}
             </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin: .125rem 0 0 -5rem">
+
+              <ul id="profile-dropdown" class="dropdown-content">
               {% if request.user.is_authenticated %}
-                <a class="dropdown-item" href="#" id="subscribe">{% trans 'Subscribe' %}</a>
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
-                {% else %}
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="dropdown-item" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="dropdown-item" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-              {% endif %}  
-            </div>
+                <li>
+                    <a href="{% url 'users:detail' request.user.username  %}">
+                      {% trans "Profile" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'account_logout' %}">
+                      {% trans "Sign Out" %}
+                    </a>
+                </li>
+              {% else %}
+                <li>
+                    <a href="{% url 'account_signup' %}">
+                      {% trans "Signup" %}
+                    </a>
+                </li>
+                <li><a class="btn-flast" href="{% url 'account_login' %}">
+                      {% trans "Signin" %}
+                    </a>
+                </li>
+              {% endif %}
+              </ul>
+
           </div>
-      </nav>
-    </div>
-    <div class="container">
-    <span id="opener" class="other" onclick="openNav()" style="margin-top: 5rem; display: {% if request.COOKIES.mySidenav  %}none{% else %}block{% endif %}">open</span>
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
-      {% endif %}
+        </div>
+        <a href=""><span class="white-text name">{% if request.user.is_authenticated %}{{ user.username }}{% else %}{% endif %}</span></a>
+        <a href=""><span class="white-text email">{% if request.user.is_authenticated %}{{ user.balance }}{% else %}{% endif %}</span></a>        
+      </div>      
 
+      <div class="items">
+        <li>
+          <a href="{% url 'home' %}">{% trans 'Home' %}<span class="sr-only">(current)</span></a>
+        </li>
+        <li>
+          <a href="{% url 'about' %}">{% trans 'About' %}</a>
+        </li>
+        <li>
+          <a href="">{% trans 'Services' %}</a>
+        </li>
+        <li>
+          <a href="">{% trans 'Proposals' %}</a>
+        </li>
+        <li>
+          <a href="{% url 'users:list' %}">{% trans 'Executsnts' %}</a>
+        </li>
+      </div>
+
+      </ul>
+      <main>
+      <div class="container">
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
+      </div>
+      </main>
 
-    </div> <!-- /container -->
-    </div>
+          <!-- Modal Structure -->
+          <div id="modal1" class="modal full-height bottom-sheet">
+              <nav>
+                <div class="nav-wrapper">
+                  <form>
+                    <div class="input-field">
+                      <input id="search" type="search" required>
+                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                      <i class="material-icons">close</i>
+                    </div>
+                  </form>
+                </div>
+              </nav>
+                  <div class="modal-content">
+                    <div class="row">
+                    <a href="#!" class="modal-action modal-close right" style="margin: 1rem; color: rgba(0,0,0,0.87)"><i class="material-icons">close</i></a>
+                    </div>
+                    <div class="row">
+                      <div class="col s12 m6 l4 lx3">
+                        <div class="card">
+                          <div class="card-action green accent-3">
+                            <p>La la la la</p>
+                          </div>
+                          <div class="card-content">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+                          <div class="card-action green accent-3">
+                            <a href="#">This is a link</a>
+                            <a href="#">This is a link</a>
+                          </div>
+                        </div>
+                      </div>
 
-    {% block modal %}{% endblock modal %}
+                      <div class="col s12 m6 l4 lx3">
+                        <div class="card">
+                          <div class="card-action green accent-3">
+                            <p>La la la la</p>
+                          </div>
+                          <div class="card-content">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+                          <div class="card-action green accent-3">
+                            <a href="#">This is a link</a>
+                            <a href="#">This is a link</a>
+                          </div>
+                        </div>
+                      </div>
 
-    <!-- Le javascript
+                      <div class="col s12 m6 l4 lx3">
+                        <div class="card">
+                          <div class="card-action green accent-3">
+                            <p>La la la la</p>
+                          </div>
+                          <div class="card-content">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+                          <div class="card-action green accent-3">
+                            <a href="#">This is a link</a>
+                            <a href="#">This is a link</a>
+                          </div>
+                        </div>
+                      </div>                      
+
+                    </div>
+
+                    <div class="row">
+                      <div class="card big">
+                        <div class="row">
+                          <div class="col l3 s3">
+                            <div class="card-image waves-effect waves-block waves-light">
+                              <img class="activator" src="http://materializecss.com/images/office.jpg">
+                            </div>
+                          </div>
+                          <div class="col l9 s9">
+                            <div class="card-content">
+                              <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                            </div>
+                            <div class="card-tabs">
+                              <ul class="tabs tabs-fixed-width">
+                                <li class="tab"><a href="#test4">Test 1</a></li>
+                                <li class="tab"><a class="active" href="#test5">Test 2</a></li>
+                                <li class="tab"><a href="#test6">Test 3</a></li>
+                              </ul>
+                            </div>
+                            <div class="card-content grey lighten-4">
+                              <div id="test4">Test 1</div>
+                              <div id="test5">Test 2</div>
+                              <div id="test6">Test 3</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="card big">
+                        <div class="row">
+                          <div class="col l3 s3">
+                            <div class="card-image waves-effect waves-block waves-light">
+                              <img class="activator" src="http://materializecss.com/images/office.jpg">
+                            </div>
+                          </div>
+                          <div class="col l9 s9">
+                            <div class="card-content">
+                              <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                            </div>
+                            <div class="card-tabs">
+                              <ul class="tabs tabs-fixed-width">
+                                <li class="tab"><a href="#test4">Test 1</a></li>
+                                <li class="tab"><a class="active" href="#test5">Test 2</a></li>
+                                <li class="tab"><a href="#test6">Test 3</a></li>
+                              </ul>
+                            </div>
+                            <div class="card-content grey lighten-4">
+                              <div id="test4">Test 1</div>
+                              <div id="test5">Test 2</div>
+                              <div id="test6">Test 3</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="card big">
+                        <div class="row">
+                          <div class="col l3 s3">
+                            <div class="card-image waves-effect waves-block waves-light">
+                              <img class="activator" src="http://materializecss.com/images/office.jpg">
+                            </div>
+                          </div>
+                          <div class="col l9 s9">
+                            <div class="card-content">
+                              <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                            </div>
+                            <div class="card-tabs">
+                              <ul class="tabs tabs-fixed-width">
+                                <li class="tab"><a href="#test4">Services</a></li>
+                                <li class="tab"><a class="active" href="#test5">Commepnts</a></li>
+                                <li class="tab"><a href="#test6">Complete jobs</a></li>
+                              </ul>
+                            </div>
+                            <div class="card-content grey lighten-4">
+                              <div id="test4">Test 1</div>
+                              <div id="test5">Test 2</div>
+                              <div id="test6">Test 3</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                  </div>
+
+              <div class="modal-footer">
+              </div>
+
+
+          </div>
+
+  <footer>
+
+
+
+  </footer>
+
+
+
+
+      <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     {% block javascript %}
 
-      <!-- Required by Bootstrap v4 Alpha 4 -->
+      <!-- Required by Materialize CSS -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js" integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"></script>
-      <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
       <!-- Your stuff: Third-party javascript libraries go here -->
       <!-- place project specific Javascript in this file -->
       {% compress js %}
-      <script src="{% static 'js/project.js' %}"></script>
       <script src="{% static 'js/search.js' %}"></script>
-      <script src="{% static 'js/firebase_subscribe.js' %}"></script>
+      <script src="{% static 'js/project.js' %}"></script>
       {% endcompress %}
       {% if user.is_authenticated %}<script type="text/javascript">var user_id = {{ user.id }};</script>{% endif %}
       {% block included_javascript %}

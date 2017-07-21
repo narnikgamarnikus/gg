@@ -156,3 +156,70 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 } 
+
+
+
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+main, footer {
+  padding-left: 0px;
+}
+
+.bottom-sheet {
+  right: 0;
+}
+
+@media only screen and (min-width: 992px) {
+  .side-nav {
+      transform: translateX(0%) !important;
+  }
+  nav, main, footer {
+    padding-left: 300px;
+  }
+  #modal1 {
+    padding-right: 300px;
+  }
+  #modal1 nav {
+    padding-left: 0px;
+  }
+  .bottom-sheet {
+    left: 300px;
+  }
+  .modal-overlay {
+    display: none !important;
+  }
+}
+#modal1 {
+  padding-left: 0px;
+}
+
+.modal .modal-footer {
+  text-align: left;
+}
+
+.side-nav .user-view {
+  padding-top: 3rem;
+  height: 15rem;
+}
+
+a.dropdown-button:nth-child(1) {
+  width: 11rem;
+}
+
+.input-field input[type="search"] {
+  height: 100%;
+}
+
+.full-height {
+  height: 100vh !important;
+  max-height: 100% !important;
+}

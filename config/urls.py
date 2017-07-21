@@ -2,15 +2,17 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from django.views import defaults as default_views
 from django.conf.urls.i18n import i18n_patterns
 from django.views.decorators.cache import cache_control
-
+from gg.typology.forms import TypologyForm as TestForm
 
 urlpatterns = i18n_patterns(
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
+
+    url(r'^testform/$', FormView.as_view(form_class=TestForm, template_name='typology/typology_form.html'), name='testform'),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),

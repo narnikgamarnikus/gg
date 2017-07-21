@@ -88,6 +88,7 @@ class Service(MPTTModel, Base):
     name = models.CharField(
         _('Name of service'),
         max_length=50)
+
     parent = TreeForeignKey(
         'self',
         verbose_name=_('Parent service'),
@@ -102,6 +103,10 @@ class Service(MPTTModel, Base):
     
     def save(self, *args, **kwargs):
         if not self.id:
+            self.title = '{} {} {}'.format(
+                self.action.name, 
+                self.object.name, 
+                self.brand.name)
             self.slug = slugify(self.title, allow_unicode=True)
         super(Service, self).save(*args, **kwargs)
     
