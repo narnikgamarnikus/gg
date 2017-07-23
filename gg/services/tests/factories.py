@@ -15,6 +15,9 @@ class ServiceUserFactory(factory.django.DjangoModelFactory):
 	user = factory.SubFactory(UserFactory)
 	balance = 50
 
+	class Meta:
+		model = 'services.ServiceUser'
+
 class ServiceFactory(factory.django.DjangoModelFactory):
 	slug = factory.Sequence(lambda n: 'test-service-{0}'.format(n))
 	name = factory.Sequence(lambda n: 'test-service-{0}'.format(n))
@@ -23,7 +26,6 @@ class ServiceFactory(factory.django.DjangoModelFactory):
 
 	class Meta:
 		model = 'services.Service'
-		django_get_or_create = ('name')
 
 
 class PriceListFactory(factory.django.DjangoModelFactory):

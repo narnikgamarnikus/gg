@@ -68,6 +68,9 @@ class ServiceUser(Base):
     user = AutoOneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     balance = models.PositiveSmallIntegerField(default=settings.USER_MOUNTHLY_BALANCE)
 
+    def get_absolute_url(self):
+        return reverse('services:service_user_detail', kwargs={'slug': self.slug})
+
     def __str__(self):  # pragma: no cover
         return self.user.username
 
@@ -88,6 +91,7 @@ class Service(MPTTModel, Base):
     name = models.CharField(
         _('Name of service'),
         max_length=50)
+
     parent = TreeForeignKey(
         'self',
         verbose_name=_('Parent service'),

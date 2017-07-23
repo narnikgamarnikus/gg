@@ -48,6 +48,6 @@ urlpatterns = [
     url(
         regex=r'^profile/(?P<username>[\w.@+-]+)/$', 
         view=views.ServiceUserDetailView, 
-        name='serviceuser_detail'
+        name='service_user_detail'
     )
 ]

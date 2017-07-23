@@ -10,7 +10,7 @@ class TestService(TestCase):
     def test__str__(self):
         self.assertEqual(
             self.service.__str__(),
-            '{}'.format(self.service.title)  # This is the default username for self.make_user()
+            '{}'.format(self.service.title)
         )
     
     def test_get_absolute_url(self):

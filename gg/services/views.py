@@ -1,6 +1,7 @@
 import ujson as json
 from dal import autocomplete
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -19,11 +20,16 @@ from django.views.generic import (
 	)
 
 class ServiceUserDetailView(HitCountDetailView):
-	model = ServiceUser
-
+	model = get_object_or_404
+	slug_field = 'username'
+	slug_url_kwarg = 'model_slug'
+	
+	'''
 	def get_object(self):
-		return settings.AUTH_USER_MODEL.objects.get_or_404(slug=self.kwargs['username'])
-
+		self.kwargs['username'] = '123123123'
+		print('SELF KWARGS IS: ' + str(self.kwargs))
+		return get_object_or_404(ServiceUser, user__username=self.username)
+	'''
 
 
 class ServiceListView(ListView):
