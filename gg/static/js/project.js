@@ -18,6 +18,10 @@ Issues with the above approach:
 3. Really Unforgiving: No way to override this behavior
 4. Undocumented: No mention in the documentation, or it's too hard for me to find
 */
+
+$(':input').removeAttr('placeholder');
+$(':input').toggleClass('validate');
+
 $('.form-group').removeClass('row');
 
 
