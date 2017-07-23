@@ -62,6 +62,7 @@ THIRD_PARTY_APPS = [
     'djmoney_rates', # django-money-rates https://github.com/evonove/django-money-rates
     'hitcount', # http://django-hitcount.readthedocs.io/en/latest/installation.html
     'geoposition', # https://github.com/philippbosch/django-geoposition
+    'simplepush', # https://github.com/subhajeet2107/django-simplepush
 ]
 
 # Apps specific for this project go here.
@@ -407,3 +408,10 @@ GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBO-_WYrcSrU79tLuKPiINGkCJ1e__RWWw'
 # SERVICES SETTINGS
 # ------------------------------------------------------------------------------
 USER_MOUNTHLY_BALANCE = 10
+
+# DJANGO SIMPLEWEBPUSH SETTINGS
+# ------------------------------------------------------------------------------
+SIMPLEPUSH_SETTINGS = {
+    "GCM_ID": "test-b36d2",
+    "GCM_KEY":"AIzaSyBAaeZDIa6cirkEzdAOupL9CDyOp3lhr"
+}

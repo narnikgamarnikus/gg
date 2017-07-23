@@ -24,6 +24,7 @@ urlpatterns = i18n_patterns(
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^search/', include('gg.search.urls', namespace='search')),
     url(r'^avatar/', include('avatar.urls')),
+    url(r'^simplepush/', include('simplepush.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
