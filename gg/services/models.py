@@ -106,6 +106,10 @@ class Service(MPTTModel, Base):
     
     def save(self, *args, **kwargs):
         if not self.id:
+            self.title = '{} {} {}'.format(
+                self.action.name, 
+                self.object.name, 
+                self.brand.name)
             self.slug = slugify(self.title, allow_unicode=True)
         super(Service, self).save(*args, **kwargs)
     

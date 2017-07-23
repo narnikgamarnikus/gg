@@ -49,6 +49,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'crispy_forms',  # Form layouts
+    'crispy_forms_materialize', # https://github.com/edvm/crispy-forms-materialize
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
@@ -72,6 +73,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     'gg.services.apps.ServicesConfig',
     'gg.badges.apps.BadgesConfig',
+    'gg.typology.apps.TypologyConfig',
 ]
 
 # Apps that you want to connect to the main.
@@ -253,7 +255,7 @@ TEMPLATES = [
 ]
 
 # See: http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'materialize_css_forms'#'bootstrap4'
 
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
