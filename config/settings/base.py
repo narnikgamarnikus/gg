@@ -64,6 +64,7 @@ THIRD_PARTY_APPS = [
     'hitcount', # http://django-hitcount.readthedocs.io/en/latest/installation.html
     'geoposition', # https://github.com/philippbosch/django-geoposition
     'simplepush', # https://github.com/subhajeet2107/django-simplepush
+    'friendship', # https://github.com/revsys/django-friendship
 ]
 
 # Apps specific for this project go here.
@@ -74,6 +75,7 @@ LOCAL_APPS = [
     'gg.services.apps.ServicesConfig',
     'gg.badges.apps.BadgesConfig',
     'gg.typology.apps.TypologyConfig',
+    'facecontrol',
 ]
 
 # Apps that you want to connect to the main.

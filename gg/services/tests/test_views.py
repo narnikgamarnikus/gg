@@ -9,23 +9,7 @@ from ..views import (
     )
 
 
-class TestServiceUserDetailView(TestCase):
 
-    def setUp(self):
-        self.service_user = ServiceUserFactory.create()
-        self.view = ServiceUserDetailView()
-        self.factory = RequestFactory()
-        request = self.factory.get('/fake-url')
-        request.user = self.service_user
-        self.view.request = request
-
-    '''
-    def test_get_object(self):
-        self.assertEqual(
-            self.view.get_object(),
-            '/en/services/profile/{}/'.format(self.service_user.user.username)
-            )
-    '''
 
 
 class BaseServiceTestCase(TestCase):

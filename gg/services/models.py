@@ -69,7 +69,7 @@ class ServiceUser(Base):
     balance = models.PositiveSmallIntegerField(default=settings.USER_MOUNTHLY_BALANCE)
 
     def get_absolute_url(self):
-        return reverse('services:service_user_detail', kwargs={'slug': self.slug})
+        return reverse('users:detail', kwargs={'slug': self.user.username})
 
     def __str__(self):  # pragma: no cover
         return self.user.username

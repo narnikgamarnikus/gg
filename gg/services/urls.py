@@ -44,10 +44,5 @@ urlpatterns = [
         view=views.PriceListDetailView.as_view(),
         name='pricelist_detail'
     ),
-
-    url(
-        regex=r'^profile/(?P<username>[\w.@+-]+)/$', 
-        view=views.ServiceUserDetailView, 
-        name='service_user_detail'
-    )
+    
 ]

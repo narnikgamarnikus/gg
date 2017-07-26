@@ -16,6 +16,7 @@ django-environ==0.4.3
 # Forms
 django-braces==1.11.0
 django-crispy-forms==1.6.1
+django-parsley
 
 crispy-forms-materialize
 
@@ -78,3 +79,4 @@ django-money-rates==0.3.1
 django-multiselectfield
 django-geoposition
 django-simplepush
+pyelliptic==1.5.7

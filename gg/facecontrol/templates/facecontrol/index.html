@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load staticfiles facecontrol_tags %}
+{% include 'django_file_form/upload_template.html' %}
+
+{% block content %}
+  <video id="video" width="320" height="240" preload autoplay loop muted></video>
+  <video id="recorded" autoplay loop></video>
+
+    <div>
+      <button id="record" disabled>Start Recording</button>
+      <button id="play" disabled>Play</button>
+      <button id="download" disabled>Download</button>
+    </div>
+{% endblock content %}
+
+{% block included_javascript %}
+
+  {% facecontrol_js %}
+{% endblock included_javascript %}
+
+

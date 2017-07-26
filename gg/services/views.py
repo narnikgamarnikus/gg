@@ -19,18 +19,6 @@ from django.views.generic import (
 	RedirectView, UpdateView, CreateView
 	)
 
-class ServiceUserDetailView(HitCountDetailView):
-	model = get_object_or_404
-	slug_field = 'username'
-	slug_url_kwarg = 'model_slug'
-	
-	'''
-	def get_object(self):
-		self.kwargs['username'] = '123123123'
-		print('SELF KWARGS IS: ' + str(self.kwargs))
-		return get_object_or_404(ServiceUser, user__username=self.username)
-	'''
-
 
 class ServiceListView(ListView):
 	# These next one line tell the view to index lookups by slug
