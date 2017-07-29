@@ -65,6 +65,7 @@ THIRD_PARTY_APPS = [
     'geoposition', # https://github.com/philippbosch/django-geoposition
     'simplepush', # https://github.com/subhajeet2107/django-simplepush
     'friendship', # https://github.com/revsys/django-friendship
+
 ]
 
 # Apps specific for this project go here.

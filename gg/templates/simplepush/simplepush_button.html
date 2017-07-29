@@ -1,8 +1,9 @@
+{% load i18n %}
 {% if request.user.is_authenticated %}
 <li>
   <a id="simplepush-subscribe-button" data-url="{{ url }}">
-    Subscribe to Push Messaging
+    {% trans 'Subscribe' %}
   </a>
 </li>
-<div id="simplepush-message" hidden></div>
+<div id="simplepush-message"></div>
 {% endif %}

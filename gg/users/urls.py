@@ -14,13 +14,48 @@ urlpatterns = [
         name='redirect'
     ),
     url(
-        regex=r'^(?P<username>[\w.@+-]+)/$',
-        view=views.UserDetailView.as_view(),
-        name='detail'
-    ),
-    url(
         regex=r'^~update/$',
         view=views.UserUpdateView.as_view(),
         name='update'
+    ),
+    url(
+        regex=r'^~add/(?P<username>[\w.@+-]+)/$',
+        view=views.UserAddToFriendView.as_view(),
+        name='add'
+    ),
+    url(
+        regex=r'^~reject/(?P<friendship_request_id>[\w.@+-]+)/$',
+        view=views.UserFriendRejectView.as_view(),
+        name='reject'
+    ),
+    url(
+        regex=r'^~accept/(?P<friendship_request_id>[\w.@+-]+)/$',
+        view=views.UserFriendAcceptView.as_view(),
+        name='accept'
+    ),
+    url(
+        regex=r'^~viewed/(?P<friendship_request_id>[\w.@+-]+)/$',
+        view=views.UserFriendViewedView.as_view(),
+        name='viewed'
+    ),
+    url(
+        regex=r'^~cancel/(?P<friendship_request_id>[\w.@+-]+)/$',
+        view=views.UserFriendAcceptView.as_view(),
+        name='cancel'
+    ),
+    url(
+        regex=r'^~friends/$',
+        view=views.UserFriendsListView.as_view(),
+        name='friends'
+    ),
+    url(
+        regex=r'^friendship/(?P<friendship_request_id>[\w.@+-]+)/$',
+        view=views.UserFriendshipDetailView.as_view(),
+        name='friendship'
+    ),
+    url(
+        regex=r'^(?P<username>[\w.@+-]+)/$',
+        view=views.UserDetailView.as_view(),
+        name='detail'
     ),
 ]

@@ -28,9 +28,8 @@ urlpatterns = i18n_patterns(
     url(r'^avatar/', include('avatar.urls')),
     url(r'^simplepush/', include('simplepush.urls')),
 
+    #url(r'^friendship/', include('friendship.urls')),
     url(r'^facecontrol', include('facecontrol.urls', namespace='facecontrol')),
-    url(r'^friendship/', include('friendship.urls'))
-
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

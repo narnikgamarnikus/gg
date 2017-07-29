@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static i18n avatar_tags  %}
+{% block title %}{% trans 'My friends' %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>{% trans 'My friends' %}</h2>
+
+  <ul class="collection">
+    <ul class="tabs tabs-fixed-width">
+      <li class="tab"><a href="#all-friends" class="cyan-text text-accent-4">{% trans 'All friends' %}</a></li>
+      <li class="tab"><a href="#unrejected-friends" class="cyan-text text-accent-4">{% trans 'Unrejected friends' %}</a></li>
+      <li class="tab"><a href="#unviewed-friends" class="cyan-text text-accent-4">{% trans 'Unviewed friends' %}</a></li>
+
+    </ul>
+    <div id="all-friends" class="col s12">
+    <ul class="collection">
+    {% for friend in all_friends %}
+      <li class="collection-item avatar">
+        {% avatar friend 65 class="circle" %}
+        <span class="title">Title</span>
+        <p>{{ friend.username }} <br></p>
+          <form method="post" action="{% url 'users:cancel' friend.pk %}">
+          {% csrf_token %}
+          <a href="#!" onclick="$(this).closest('form').submit();" class="secondary-content"/><i class="material-icons">close</i></a>
+          </form>
+      </li>
+    {% endfor %}
+    </ul>
+    </div>
+    <div id="unrejected-friends" class="col s12">
+      <ul class="collection">
+      {% for friend in unrejected_friends %}
+        <li class="collection-item avatar">
+          <a href="{% url 'users:detail' friend.from_user %}">{% avatar friend.from_user 65 class="circle" %}</a>
+          <span class="title">{{ friend.from_user.username }}</span>
+          <a href="{% url 'users:friendship' friend.id %}"><p>{{ friend.message | truncatechars:75 }}</p></a>
+          <form method="post" action="{% url 'users:reject' friend.pk %}">
+          {% csrf_token %}
+          <a href="#!" onclick="$(this).closest('form').submit();" class="secondary-content"/><i class="material-icons">close</i></a>
+          </form>
+          <form method="post" action="{% url 'users:accept' friend.pk %}">
+          {% csrf_token %}
+          <a href="#!" onclick="$(this).closest('form').submit();" class="tertiary-content"/><i class="material-icons">check</i></a>
+          </form>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    <div id="unviewed-friends" class="col s12">
+      <ul class="collection">
+      {% for friend in unviewed_friends %}
+        <li class="collection-item avatar">
+          {% avatar friend.from_user 65 class="circle" %}
+          <span class="title">Title</span>
+          <p>{{ friend.from_user.username }} <br></p>
+          <form method="post" action="{% url 'users:viewed' friend.pk %}">
+          {% csrf_token %}
+          <a href="#!" onclick="$(this).closest('form').submit();" class="secondary-content"/><i class="material-icons">check</i></a>
+          </form>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+{% endblock content %}

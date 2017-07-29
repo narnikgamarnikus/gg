@@ -78,5 +78,7 @@ django-money==0.10.2
 django-money-rates==0.3.1
 django-multiselectfield
 django-geoposition
-django-simplepush
+#django-simplepush
 pyelliptic==1.5.7
+git+https://github.com/narnikgamarnikus/django-friendship
+git+https://github.com/narnikgamarnikus/django-simplepush

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static i18n %}
+{% load static i18n friendshiptags %}
 {% block title %}Members{% endblock %}
 
 {% block content %}
@@ -12,10 +12,11 @@
       	<div class="d-flex w-100 justify-content-between">
       	  <h5 class="mb-1">{{ user.username }} {{ user.first_name }} {{ user.last_name }}</h5>
       	  <small>{{ user.reputation }}</small>
-    	</div>
+    	   </div>
     	<p class="mb-1"></p>
     	<small></small>
   	  </a>
+
     {% endfor %}
   </div>
 </div>
