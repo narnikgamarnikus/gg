@@ -12,9 +12,11 @@ def autocomplete(request):
     	{
     	"id" : result.object.pk,
     	"title" : result.object.__str__(), 
-    	"link" : result.object.get_absolute_url()
+    	"link" : result.object.get_absolute_url(),
+    	"model": result.object.__class__.__name__,
     	} for result in sqs
     ]
+    print(suggestions)
 
     return HttpResponse(json.dumps(suggestions), content_type='application/json')
 

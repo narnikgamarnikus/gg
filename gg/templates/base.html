@@ -1,4 +1,4 @@
-{% load staticfiles i18n compress account socialaccount avatar_tags simplepush_tags %}<!DOCTYPE html>
+{% load staticfiles i18n compress account socialaccount avatar_tags simplepush_tags crispy_forms_tags %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -128,9 +128,9 @@
           <div id="modal1" class="modal full-height bottom-sheet">
               <nav>
                 <div class="nav-wrapper">
-                  <form>
+                  <form method="post" action="/search/" class="autocomplete-me">
                     <div class="input-field">
-                      <input id="search" type="search" required>
+                      <input id="search" type="search" name="q" required>
                       <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                       <i class="material-icons">close</i>
                     </div>
@@ -141,7 +141,20 @@
                     <div class="row">
                     <a href="#!" class="modal-action modal-close right" style="margin: 1rem; color: rgba(0,0,0,0.87)"><i class="material-icons">close</i></a>
                     </div>
-                    <div class="row">
+                      <form class="form-horizontal" method="post">
+                      {% csrf_token %}
+                      {{ job_form|crispy }}
+                      <input id="date" type="text">
+                      <input id="time" type="text">
+                      <div id="outlet"></div>
+                      <div class="control-group">
+                      <div class="controls">
+                        <button type="submit" class="btn">Create</button>
+                      </div>
+                      </div>
+                      </form>
+
+                    <!--div class="row">
                       <div class="col s12 m6 l4 lx3">
                         <div class="card">
                           <div class="card-action green accent-3">
@@ -193,9 +206,9 @@
                         </div>
                       </div>                      
 
-                    </div>
+                    </div-->
 
-                    <div class="row">
+                    <!--div class="row">
                       <div class="card big">
                         <div class="row">
                           <div class="col l3 s3">
@@ -280,7 +293,7 @@
                       </div>
 
 
-                  </div>
+                  </div-->
 
               <div class="modal-footer">
               </div>
@@ -311,6 +324,7 @@
       {% compress js %}
       <script src="{% static 'js/search.js' %}"></script>
       <script src="{% static 'js/project.js' %}"></script>
+      <script src="{% static 'js/ws.js' %}"></script>
       {% simplepush_js %}
       {% endcompress %}
       {% if user.is_authenticated %}<script type="text/javascript">var user_id = {{ user.id }};</script>{% endif %}

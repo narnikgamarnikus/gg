@@ -77,6 +77,7 @@ LOCAL_APPS = [
     'gg.badges.apps.BadgesConfig',
     'gg.typology.apps.TypologyConfig',
     'facecontrol',
+    'channels',
 ]
 
 # Apps that you want to connect to the main.
@@ -151,11 +152,11 @@ DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'ru_RU' #'en-us'  
+LANGUAGE_CODE = 'ru' #'en-us'  
 
 LANGUAGES = (
-    ('en', 'English'),
     ('ru', 'Russian'),
+    #('en', 'English'),
 )
 
 LOCALE_PATHS = (
@@ -251,7 +252,9 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
-                'users.context_processors.allauth_popup.allauth_popup'
+                'users.context_processors.allauth_popup.allauth_popup',
+                'services.context_processors.job_form',
+
             ],
         },
     },
@@ -419,4 +422,16 @@ USER_MOUNTHLY_BALANCE = 10
 SIMPLEPUSH_SETTINGS = {
     "GCM_ID": "test-b36d2",
     "GCM_KEY":"AIzaSyBAaeZDIa6cirkEzdAOupL9CDyOp3lhr"
+}
+
+# DJANGO_CHANNELS https://channels.readthedocs.io/en/stable/getting-started.html
+# ------------------------------------------------------------------------------
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "config.routing.channel_routing",
+    },
 }

@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.views.generic import TemplateView, FormView
 from django.views import defaults as default_views
 from django.conf.urls.i18n import i18n_patterns
-from django.views.decorators.cache import cache_control
 from gg.typology.forms import TypologyForm as TestForm
 
 urlpatterns = i18n_patterns(
