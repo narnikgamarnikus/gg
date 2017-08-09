@@ -44,5 +44,12 @@ urlpatterns = [
         view=views.PriceListDetailView.as_view(),
         name='pricelist_detail'
     ),
+
+    url(
+        regex=r'^city-autocomplete/$',
+        view=views.CityAutocomplete.as_view(),
+        name='city-autocomplete',
+    ),
+
     
 ]

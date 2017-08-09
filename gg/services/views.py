@@ -18,6 +18,8 @@ from django.views.generic import (
 	View, DetailView, ListView, 
 	RedirectView, UpdateView, CreateView
 	)
+from cities.models import City
+from django.utils.translation import get_language
 
 
 class ServiceListView(ListView):
@@ -243,5 +245,24 @@ class ServicesAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+
+
+class CityAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return City.objects.none()
+
+        qs = City.objects.prefetch_related('alt_names').all()
+        #qs = AlternativeName.objects.filter(language_code=self.request.LANGUAGE_CODE).all()[:10]
+        #qs = AlternativeName.objects.filter(language_code=self.request.LANGUAGE_CODE).all()
+
+        if self.q:
+
+            qs = qs.filter(alt_names__name__istartswith=self.q, alt_names__language_code=self.request.LANGUAGE_CODE)[:10]
+            #qs = qs.filter(city__isnull=False, name__istartswith=self.q).all()[:10]
 
         return qs

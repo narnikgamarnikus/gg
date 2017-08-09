@@ -40,7 +40,7 @@
               <li><a class="navbar-dropdown-button" href="#!" data-activates="account-dropdown"><i class="material-icons">more_vert</i></a></li>
             </ul>
             <ul id="account-dropdown" class="dropdown-content">
-              {% simplepush_html_button %}
+              {% simplepush_button %}
               {% if request.user.is_authenticated %}
                 <li>
                     <a href="{% url 'account_logout' %}">
@@ -325,6 +325,7 @@
       <script src="{% static 'js/search.js' %}"></script>
       <script src="{% static 'js/project.js' %}"></script>
       <script src="{% static 'js/ws.js' %}"></script>
+
       {% simplepush_js %}
       {% endcompress %}
       {% if user.is_authenticated %}<script type="text/javascript">var user_id = {{ user.id }};</script>{% endif %}

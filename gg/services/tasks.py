@@ -21,3 +21,5 @@ def changed_user_balance(user_pk):
 def create_user(sender, instance, created, **kwargs):
 	if created:
 		changed_user_balance(instance.id)
+
+

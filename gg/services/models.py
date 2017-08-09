@@ -14,6 +14,7 @@ from django_fsm import ConcurrentTransitionMixin, FSMField, transition
 from geoposition.fields import GeopositionField
 from .utils import slug_generator
 from django.utils import timezone
+from django.utils.functional import cached_property
 
 
 @python_2_unicode_compatible
@@ -140,10 +141,31 @@ class Job(ConcurrentTransitionMixin, Base):
     date = models.DateTimeField(default=timezone.now())
     address = GeopositionField()
 
-    def save(self, *args, **kwargs):
+
+    @cached_property
+    def state_changes(self):
+        state_changes = dict()
+        return state_changes
+
+
+    def __init__(self, *args, **kwargs):
+        super(Job, self).__init__(*args, **kwargs)
+        self.__state = self.state
+
+
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.state != self.__state:
+            print('state')
+
         if not self.id:
             self.slug = slugify(self.title, allow_unicode=True)
-        super(Job, self).save(*args, **kwargs)
+
+        super(Job, self).save(force_insert, force_update, *args, **kwargs)
+        self.__state = self.state
+
+    #def save(self, *args, **kwargs):
+    #
+    #    super(Job, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.slug
@@ -187,6 +209,7 @@ class Proposal(ConcurrentTransitionMixin, Base):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     description = models.CharField(max_length=255, null=True)
     bet = models.PositiveSmallIntegerField(default=0)
+    discount = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         unique_together = (("job", "user"),)

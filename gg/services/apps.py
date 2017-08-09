@@ -6,4 +6,5 @@ class ServicesConfig(AppConfig):
     verbose_name = 'Services'
 
     def ready(self):
-    	pass
+    	import gg.services.tasks
+    	import gg.services.consumers

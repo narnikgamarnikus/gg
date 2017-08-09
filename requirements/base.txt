@@ -72,7 +72,6 @@ django-avatar==3.1.0
 django-annoying==0.10.3
 django-hitcount==1.2.2
 django-filter
-django-cities
 django-jinja
 django-money==0.10.2
 django-money-rates==0.3.1
@@ -82,3 +81,9 @@ django-geoposition
 pyelliptic==1.5.7
 git+https://github.com/narnikgamarnikus/django-friendship
 git+https://github.com/narnikgamarnikus/django-simplepush
+git+https://github.com/narnikgamarnikus/django-cities
+#django-cities
+channels
+asgi_redis
+Twisted[tls,http2]
+autobahn

@@ -65,7 +65,7 @@ THIRD_PARTY_APPS = [
     'geoposition', # https://github.com/philippbosch/django-geoposition
     'simplepush', # https://github.com/subhajeet2107/django-simplepush
     'friendship', # https://github.com/revsys/django-friendship
-
+    'cities',
 ]
 
 # Apps specific for this project go here.
@@ -424,14 +424,12 @@ SIMPLEPUSH_SETTINGS = {
     "GCM_KEY":"AIzaSyBAaeZDIa6cirkEzdAOupL9CDyOp3lhr"
 }
 
-# DJANGO_CHANNELS https://channels.readthedocs.io/en/stable/getting-started.html
+
+# DJANGO CITIES SETTINGS
 # ------------------------------------------------------------------------------
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],
-        },
-        "ROUTING": "config.routing.channel_routing",
-    },
-}
+CITIES_LOCALES = ['en', 'und', 'LANGUAGES']
+CITIES_VALIDATE_POSTAL_CODES = True
+CITIES_SKIP_CITIES_WITH_EMPTY_REGIONS = True
+CITIES_POSTAL_CODES = []
+
+

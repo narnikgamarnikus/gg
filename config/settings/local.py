@@ -77,3 +77,22 @@ CELERY_ALWAYS_EAGER = True
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+# DJANGO_CHANNELS https://channels.readthedocs.io/en/stable/getting-started.html
+# ------------------------------------------------------------------------------
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "config.routing.channel_routing",
+    },
+}
+
+#CHANNEL_LAYERS = {
+#    "default": {
+#        "BACKEND": "asgi_redis.RedisChannelLayer",
+#        "CONFIG": {
+#            "hosts": [("localhost", 6379)],
+#        },
+#        "ROUTING": "config.routing.channel_routing",
+#    },
+#}
