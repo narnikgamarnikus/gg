@@ -15,6 +15,9 @@ from geoposition.fields import GeopositionField
 from .utils import slug_generator
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.core import serializers
+import ujson as json
+from .serializers import ExtJsonSerializer, ExtPythonSerializer
 
 
 @python_2_unicode_compatible
@@ -48,6 +51,12 @@ class State(object):
         (OUT, _('Out')), 
     )
 
+    PROPOSAL_STATES = (
+        (NEW, _('New')),
+        (ACCEPTED, _('Accepted')),
+        (WITHDRAWN ,_('Withdrawn')),
+    )
+
     OFFER_STATES = (
         (NEW, _('New')),
         (ACCEPTED, _('Accepted')),
@@ -71,6 +80,51 @@ class ServiceUser(Base):
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'slug': self.user.username})
+
+
+    @cached_property
+    def jobs_list(self):
+        return [p.service for p in Job.objects.filter(user=self).all()]
+
+    @cached_property
+    def jobs(self):
+        return Job.objects.filter(user=self).all()
+
+    @cached_property
+    def jobs_json(self):
+        return ExtJsonSerializer().serialize(Job.objects.filter(user=self), props=['proposals_json']) 
+
+
+    @cached_property
+    def proposals(self):
+        return Proposal.objects.filter(user=self).all()
+
+    @cached_property
+    def proposals_list(self):
+        return [p.service for p in Proposal.objects.filter(user=self).all()]
+
+    @cached_property
+    def proposals_json(self):
+        return serializers.serialize("json", self.proposals)
+
+
+    @cached_property
+    def pricelist(self):
+        return PriceList.objects.filter(user=self).all()
+
+
+    @cached_property
+    def services_list(self):
+        return [p.service for p in PriceList.objects.filter(user=self).all()]
+
+    @cached_property
+    def services_json(self):
+        return serializers.serialize("json", self.services_list[0])
+
+    @cached_property
+    def proposals_jobs(self):
+        return [p.job.proposals_json for p in self.proposals]
+
 
     def __str__(self):  # pragma: no cover
         return self.user.username
@@ -142,6 +196,21 @@ class Job(ConcurrentTransitionMixin, Base):
     address = GeopositionField()
 
 
+
+    @cached_property
+    def proposals(self):
+        return Proposal.objects.all()
+
+    @cached_property
+    def proposals_json(self):
+        new_proposals_json = serializers.serialize("json", Proposal.objects.all())
+        return [{'index': index, 'object': obj} for index, obj in enumerate(json.loads(new_proposals_json), 1)] 
+
+    @cached_property
+    def users(self):
+        pricelists = PriceList.objects.filter(service__in=[s for s in self.services.all()])
+        return [p.user for p in pricelists if p.user is not self.user]
+
     @cached_property
     def state_changes(self):
         state_changes = dict()
@@ -206,7 +275,12 @@ class Offer(ConcurrentTransitionMixin, Base):
 class Proposal(ConcurrentTransitionMixin, Base):
     slug = models.SlugField(null=True, blank=True)
     job = models.ForeignKey(Job, null=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    state = FSMField(
+        default=State.NEW,
+        choices=State.PROPOSAL_STATES,
+        protected=True,
+    )
+    user = models.ForeignKey(ServiceUser, null=True)
     description = models.CharField(max_length=255, null=True)
     bet = models.PositiveSmallIntegerField(default=0)
     discount = models.PositiveSmallIntegerField(default=0)
@@ -214,11 +288,17 @@ class Proposal(ConcurrentTransitionMixin, Base):
     class Meta:
         unique_together = (("job", "user"),)
 
+    def make_bet(self):
+        self.user.balance - self.bet
+
     def clean(self):
-        if self.bet > settings.AUTH_USER_MODEL.objects.get(pk=self.user.user.pk).balane:
+        if self.bet > self.user.balance:
             raise ValidationError(_('The bet can not be more than your current balance.'))
-        if self.bet < settings.AUTH_USER_MODEL.objects.get(pk=self.user.user.pk).balane:
-            raise ValidationError(_('The bet can not be less than your current balance.'))
+
+        if self.user == self.job.user:
+            raise ValidationError(_('You can not create proposal for your own job.'))
+
+
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -243,7 +323,10 @@ class PriceList(Base):
         null=True)
     above_price = MoneyField(max_digits=10, decimal_places=2, default_currency='BYN',
         null=True)
-    
+
+    class Meta:
+        unique_together = (("service", "user"),)
+
     def __str__(self):
         if self.service.name:
             return _('Service: %s') % str(self.service.name)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin
-from .models import Service, PriceList, ServiceUser, Job
+from .models import Service, PriceList, ServiceUser, Job, Proposal
 
 class ServiceModelAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
@@ -28,6 +28,12 @@ class ServiceModelAdmin(DraggableMPTTAdmin):
 admin.site.register(Service, ServiceModelAdmin)
 admin.site.register(PriceList)
 admin.site.register(ServiceUser)
+
+
+@admin.register(Proposal)
+class JobAdmin(admin.ModelAdmin):
+    exclude = ['slug', 'is_removed']
+
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
